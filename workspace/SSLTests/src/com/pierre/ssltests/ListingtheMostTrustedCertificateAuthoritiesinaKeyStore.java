@@ -11,10 +11,10 @@ import java.util.Iterator;
 public class ListingtheMostTrustedCertificateAuthoritiesinaKeyStore {
 	public static void main(String[] argv) throws Exception {
 
-		String filename = System.getProperty("java.home") + "/lib/security/cacerts".replace('/', File.separatorChar);
+		String filename = Constants.JKSCACERTSFILE;
 		FileInputStream is = new FileInputStream(filename);
 		KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-		String password = "changeit";
+		String password = Constants.JKSCACERTSFILEPASSWORD;
 		keystore.load(is, password.toCharArray());
 
 		PKIXParameters params = new PKIXParameters(keystore);
