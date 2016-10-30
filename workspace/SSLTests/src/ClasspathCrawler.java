@@ -1,50 +1,58 @@
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Enumeration;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 public class ClasspathCrawler {
+	
+	List<String> effectiveClasspath = new ArrayList<String>();
+	
+	
 	public static void main(String[] args) throws Exception {
 		ClasspathCrawler cpc = new ClasspathCrawler();
-		cpc.crawl();
-		
-	}
-
-	private void crawl() throws Exception {
 		String cp = System.getProperty("java.class.path");
 		String cpseparator = File.pathSeparator;
+		cpc.crawl("", cp, cpseparator);
+	}
+
+	private void crawl(String basepath, String cp, String cpseparator) throws Exception {
 		log("classpath=" + cp);
 		for (String cpentry : cp.split(cpseparator)) {
+			cpentry = cpentry.trim();
+			if (basepath != null && basepath.length() > 0) {
+				log("normalizing " + cpentry + " using basepath " + basepath);
+				cpentry = new File(basepath +  "/" + cpentry).getCanonicalFile().getAbsolutePath() ;
+			}
 			log("entry=" + cpentry);
 			File cpentryFile = new File(cpentry);
 			if (cpentryFile.exists() ) {
+				if (effectiveClasspath.contains(cpentryFile)) {
+					log("WARNING: " + cpentryFile + " already in effective classpath..... possible circular reference");
+				}
+				else {
+					effectiveClasspath.add(cpentry);
+				}
 				if (cpentryFile.isFile()) {
 					ZipFile zipFile = new ZipFile(cpentryFile);
-//					Enumeration<? extends ZipEntry> entries = zipFile.entries();
-//					while (entries.hasMoreElements()) {
-//						ZipEntry element = entries.nextElement();
-//						log("element = " + element.getName());
-//					}
-					
 					ZipEntry zipEntry = zipFile.getEntry("META-INF/MANIFEST.MF");
 					if (zipEntry != null) {
 						String content = readZipEntry(zipFile, zipEntry);
 						log(content);
 						String cpInManifest = extractCp(content);
-						log("cpInManifest=" + cpInManifest);
+						if (cpInManifest != null && cpInManifest.length() > 0) {
+							log("cpInManifest=" + cpInManifest);
+							crawl(cpentryFile.getParentFile().getAbsolutePath(), cpInManifest, " ");
+						}
 					}
 				}
 				else {
 					log("INFO: skipping directory " + cpentry );
 				}
-				
 			}
 			else {
 				log("WARNING: " + cpentry + " doesn't exist");
@@ -68,7 +76,7 @@ public class ClasspathCrawler {
 			}
 		}
 		
-		return result.toString().replace("Class-Path: ", "").replace("\r ", "");
+		return result.toString().replace("Class-Path: ", "").replace("\r ", "").replace("\n ", "");
 	}
 
 	private String readZipEntry(ZipFile zipFile, ZipEntry zipEntry) throws IOException, UnsupportedEncodingException {
