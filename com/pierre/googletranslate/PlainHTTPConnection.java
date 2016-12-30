@@ -1,7 +1,7 @@
 package com.pierre.googletranslate;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -35,11 +35,14 @@ import java.io.IOException;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -48,69 +51,106 @@ public class PlainHTTPConnection {
 	static final String VOICE_EN = "<voice required=\"name = Microsoft Zira Desktop\">";
 	static final String VOICE_EN_END = "{{Bookmark=VOICE_EN}}";
 	static final String VOICE_DE_END = "{{Bookmark=VOICE_DE}}";
+	static final String VOICE_IT_END = "{{Bookmark=VOICE_IT}}";
 	static final String VOICE_DE = "<voice required=\"name = Scansoft Steffi_Full_22kHz\">";
+	static final String VOICE_IT = "<voice required=\"name = Scansoft Silvia_Dri20_22kHz\">";
+	static final String SLOW = "<rate absspeed=\"-2\">";
+	static final String NORMAL = "<rate absspeed=\"0\">";
+	static final String PAUSE = "{{Pause=1}}";
 
 	public static void main(String[] args) throws Throwable {
-		String fileName = "D:\\pierre\\pictures\\libroindianer\\indianerall.txt";
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "Cp1252"));
+		// String fileName =
+		// "D:\\pierre\\pictures\\libroindianer\\indianerall.txt";
+		Charset defaultCharset = StandardCharsets.UTF_8;
+		String inputFileName = "D:\\pierre\\deutsch\\odisseaita.txt.out";
+		Path outputFilePath = Paths.get(inputFileName + ".out");
+		BufferedWriter writer = Files.newBufferedWriter(outputFilePath, defaultCharset);
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputFileName), defaultCharset));
 		String line;
 		int count = 0;
-		
+
 		while ((line = br.readLine()) != null) {
 			count++;
 			// System.out.println(line);
 			String[] splitLines = line.split(Pattern.quote("!?."));
 			for (String splitLine : splitLines) {
 				if (splitLine.trim().length() > 0) {
-					String translation = translateDeEn(splitLine);
-					System.out.println(VOICE_DE);
-					System.out.println(splitLine);
-					System.out.println(VOICE_DE_END);
-					System.out.println(VOICE_EN);
-					System.out.println(translation);
-					System.out.println(VOICE_EN_END);
-					System.out.println(VOICE_DE);
-					System.out.println(splitLine);
-					System.out.println(VOICE_DE_END);
+					String translation = translateItDe(splitLine);
+					out(NORMAL, writer);
+					out(VOICE_IT, writer);
+					out(splitLine, writer);
+					out(VOICE_IT_END, writer);
+					out(SLOW, writer);
+					out(VOICE_DE, writer);
+					out(translation, writer);
+					out(VOICE_DE_END, writer);
+					out(PAUSE, writer);
+
 					Thread.sleep(500);
 				}
 			}
 		}
 		System.out.println("count=" + count);
-		;
+
 		br.close();
+		writer.close();
 
 	}
 
+	private static String translateItDe(String sourceText) {
+		String sourceLang = "it";
+		String targetLang = "de";
+		String matchedString = translate(sourceText, sourceLang, targetLang);
+		return (matchedString);
+	}
+
 	private static String translateDeEn(String sourceText) {
-		String matchedString = "";
-		try {
-		String https_url = "https://www.google.com/";
 		String sourceLang = "de";
 		String targetLang = "en";
-		String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl="
-				+ targetLang + "&dt=t&q=" + URLEncoder.encode(sourceText, "UTF-8");
-		String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0";
-		URL theURL = new URL(url);
-		URLConnection connection = theURL.openConnection();
-		connection.setRequestProperty("User-Agent", userAgent);
-		// System.out.println(connection);
-		InputStream inputStream = connection.getInputStream();
+		String matchedString = translate(sourceText, sourceLang, targetLang);
+		return (matchedString);
+	}
 
-		String result = new BufferedReader(new InputStreamReader(inputStream)).lines().parallel()
-				.collect(Collectors.joining("\n"));
-		Pattern p = Pattern.compile("\"([^\"]*)\"");
-		Matcher m = p.matcher(result);
-		
-		if (m.find()) {
-			matchedString = m.group(1);
-		}
-		}
-		catch (Throwable t) {
+	private static String translateEnDe(String sourceText) {
+		String sourceLang = "en";
+		String targetLang = "de";
+		String matchedString = translate(sourceText, sourceLang, targetLang);
+		return (matchedString);
+	}
+
+	public static void out(String s, BufferedWriter writer) throws Throwable {
+		writer.write(s);
+		writer.write('\n');
+		System.out.println(s);
+	}
+
+	private static String translate(String sourceText, String sourceLang, String targetLang) {
+		String matchedString = "";
+		try {
+
+			String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl="
+					+ targetLang + "&dt=t&q=" + URLEncoder.encode(sourceText, "UTF-8");
+			String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0";
+			URL theURL = new URL(url);
+			URLConnection connection = theURL.openConnection();
+			connection.setRequestProperty("User-Agent", userAgent);
+			// System.out.println(connection);
+			InputStream inputStream = connection.getInputStream();
+
+			String result = new BufferedReader(new InputStreamReader(inputStream)).lines().parallel()
+					.collect(Collectors.joining("\n"));
+			Pattern p = Pattern.compile("\"([^\"]*)\"");
+			Matcher m = p.matcher(result);
+
+			if (m.find()) {
+				matchedString = m.group(1);
+			}
+		} catch (Throwable t) {
 			t.printStackTrace();
 			System.out.println("ERROR!!! unable to translate " + sourceText);
 		}
-		return (matchedString);
+		return matchedString;
 	}
 
 }
