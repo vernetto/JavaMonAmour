@@ -3,7 +3,6 @@ package com.pierre.googletranslate;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.IOException;
 
 // REQUEST:
 // (Request-Line)	GET /translate_a/single?client=gtx&sl=en&tl=de&dt=t&q=how+are+you HTTP/1.1
@@ -43,6 +42,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -62,11 +63,12 @@ public class PlainHTTPConnection {
 		// String fileName =
 		// "D:\\pierre\\pictures\\libroindianer\\indianerall.txt";
 		Charset defaultCharset = StandardCharsets.UTF_8;
-		String inputFileName = "D:\\pierre\\deutsch\\odisseaita.txt.out";
+		String inputFileName = "D:\\pierre\\calibre\\Fosco Maraini\\Ore giapponesi (30)\\Ore giapponesi - Fosco Maraini.txt";
 		Path outputFilePath = Paths.get(inputFileName + ".out");
 		BufferedWriter writer = Files.newBufferedWriter(outputFilePath, defaultCharset);
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputFileName), defaultCharset));
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(new FileInputStream(inputFileName), defaultCharset));
 		String line;
 		int count = 0;
 
@@ -77,15 +79,18 @@ public class PlainHTTPConnection {
 			for (String splitLine : splitLines) {
 				if (splitLine.trim().length() > 0) {
 					String translation = translateItDe(splitLine);
-					out(NORMAL, writer);
-					out(VOICE_IT, writer);
-					out(splitLine, writer);
-					out(VOICE_IT_END, writer);
-					out(SLOW, writer);
-					out(VOICE_DE, writer);
-					out(translation, writer);
-					out(VOICE_DE_END, writer);
-					out(PAUSE, writer);
+					translation = PrepareText.transformLatinToUTF8(translation);
+					for (int repeat = 0; repeat < 1; repeat++) {
+						out(NORMAL, writer);
+						out(VOICE_IT, writer);
+						out(splitLine, writer);
+						out(VOICE_IT_END, writer);
+						out(SLOW, writer);
+						out(VOICE_DE, writer);
+						out(translation, writer);
+						out(VOICE_DE_END, writer);
+						out(PAUSE, writer);
+					}
 
 					Thread.sleep(500);
 				}
@@ -102,21 +107,21 @@ public class PlainHTTPConnection {
 		String sourceLang = "it";
 		String targetLang = "de";
 		String matchedString = translate(sourceText, sourceLang, targetLang);
-		return (matchedString);
+		return matchedString;
 	}
 
 	private static String translateDeEn(String sourceText) {
 		String sourceLang = "de";
 		String targetLang = "en";
 		String matchedString = translate(sourceText, sourceLang, targetLang);
-		return (matchedString);
+		return matchedString;
 	}
 
 	private static String translateEnDe(String sourceText) {
 		String sourceLang = "en";
 		String targetLang = "de";
 		String matchedString = translate(sourceText, sourceLang, targetLang);
-		return (matchedString);
+		return matchedString;
 	}
 
 	public static void out(String s, BufferedWriter writer) throws Throwable {
@@ -130,7 +135,7 @@ public class PlainHTTPConnection {
 		try {
 
 			String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl="
-					+ targetLang + "&dt=t&q=" + URLEncoder.encode(sourceText, "UTF-8");
+					+ targetLang + "&dt=t&q=" + URLEncoder.encode(sourceText, "UTF-8") + "&ie=UTF-8&oe=UTF-8";
 			String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0";
 			URL theURL = new URL(url);
 			URLConnection connection = theURL.openConnection();
@@ -142,10 +147,18 @@ public class PlainHTTPConnection {
 					.collect(Collectors.joining("\n"));
 			Pattern p = Pattern.compile("\"([^\"]*)\"");
 			Matcher m = p.matcher(result);
-
-			if (m.find()) {
-				matchedString = m.group(1);
+			List<String> answers = new ArrayList<String>();
+			while (m.find()) {
+				String item = m.group(1);
+				answers.add(item);
 			}
+			String[] elements = new String[answers.size()];
+			elements = (String[]) answers.toArray(elements);
+
+			for (int i = 0; i < (elements.length - 1) / 2; i++) {
+				matchedString += elements[i * 2] + " ";
+			}
+
 		} catch (Throwable t) {
 			t.printStackTrace();
 			System.out.println("ERROR!!! unable to translate " + sourceText);
