@@ -63,7 +63,7 @@ public class PlainHTTPConnection {
 		// String fileName =
 		// "D:\\pierre\\pictures\\libroindianer\\indianerall.txt";
 		Charset defaultCharset = StandardCharsets.UTF_8;
-		String inputFileName = "D:\\pierre\\calibre\\Fosco Maraini\\Ore giapponesi (30)\\Ore giapponesi - Fosco Maraini.txt";
+		String inputFileName = "D:\\pierre\\calibre\\Der Idiot (rz)\\Dostojewski, Fjodor M (94)\\Dostojewski, Fjodor M - Der Idiot (rz).txt";
 		Path outputFilePath = Paths.get(inputFileName + ".out");
 		BufferedWriter writer = Files.newBufferedWriter(outputFilePath, defaultCharset);
 
@@ -78,16 +78,16 @@ public class PlainHTTPConnection {
 			String[] splitLines = line.split(Pattern.quote("!?."));
 			for (String splitLine : splitLines) {
 				if (splitLine.trim().length() > 0) {
-					String translation = translateItDe(splitLine);
+					String translation = translateDeEn(splitLine);
 					translation = PrepareText.transformLatinToUTF8(translation);
-					for (int repeat = 0; repeat < 1; repeat++) {
+					for (int repeat = 0; repeat < 2; repeat++) {
 						out(NORMAL, writer);
-						out(VOICE_IT, writer);
-						out(splitLine, writer);
-						out(VOICE_IT_END, writer);
+						out(VOICE_EN, writer);
+						out(translation, writer);
+						out(VOICE_EN_END, writer);
 						out(SLOW, writer);
 						out(VOICE_DE, writer);
-						out(translation, writer);
+						out(splitLine, writer);
 						out(VOICE_DE_END, writer);
 						out(PAUSE, writer);
 					}
