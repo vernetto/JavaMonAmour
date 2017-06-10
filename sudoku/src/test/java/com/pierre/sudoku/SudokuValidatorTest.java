@@ -1,10 +1,7 @@
 package com.pierre.sudoku;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
-
-import com.pierre.sudoku.SudokuValidator.SudokuResult;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -41,15 +38,15 @@ public class SudokuValidatorTest
     	SudokuValidator app = new SudokuValidator();
 		String fileName = "invalidsudoku.txt";
     	String absolutePath = getAbsolutePathForResource(fileName);
-    	SudokuResult result = null;
+    	SudokuValidationResult sudokuValidationResult = null;
     	try {
-    		result = app.validateSudokuFile(absolutePath);
+    		sudokuValidationResult = app.validateSudokuFile(absolutePath);
     	}
     	catch (Exception e) {
     		logger.severe(e.getMessage());
     	}
     	
-        assertEquals( SudokuResult.FAILURE, result);
+        assertEquals( SudokuValidationResult.ResultCode.FAILURE, sudokuValidationResult);
     }
 
     
@@ -58,15 +55,15 @@ public class SudokuValidatorTest
     	SudokuValidator app = new SudokuValidator();
 		String fileName = "validsudoku.txt";
     	String absolutePath = getAbsolutePathForResource(fileName);
-    	SudokuResult result = null;
+    	SudokuValidationResult sudokuValidationResult = null;
     	try {
-    		result = app.validateSudokuFile(absolutePath);
+    		sudokuValidationResult = app.validateSudokuFile(absolutePath);
     	}
     	catch (Exception e) {
     		logger.severe(e.getMessage());
     	}
     	
-        assertEquals( SudokuResult.SUCCESS, result);
+        assertEquals( SudokuValidationResult.ResultCode.SUCCESS, sudokuValidationResult.result);
     }
     
     /**
