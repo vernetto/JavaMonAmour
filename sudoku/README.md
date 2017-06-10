@@ -20,3 +20,6 @@ M2_HOME=D:\apps\apache-maven-3.5.0\
 The test is provided with 2 files, one valid and one invalid, in src/test/resources, and 2 JUnit tests to test both scenarios
 
 To execute the tests, you can either git clone this repository, or download the sudoku.zip file, unzip it and, from the location of pom.xml file, execute `mvn clean package`
+
+In the `src\main\scripts` folder there is the validate.bat file. Before you run it, you should initialize (`set SUDOKU_HOME=absolute_path_to_folder`) the variable SUDOKU_HOME to a location such as %SUDOKU_HOME%\lib\sudoku.jar exists (e.g. the root location where you run the `git clone` command, or where you unzipped the sudoku.zip file)
+ 
