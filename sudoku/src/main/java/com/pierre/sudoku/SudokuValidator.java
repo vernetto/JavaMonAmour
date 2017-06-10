@@ -14,10 +14,17 @@ import java.util.stream.Stream;
  */
 public class SudokuValidator {
 	static Logger logger = Logger.getLogger(SudokuValidator.class.getName());
+	
+	public static void main(String[] args) throws IOException {
+		if (args.length < 1) throw new IllegalArgumentException("missing parameter \"sudoku file absolute path\"");
+		SudokuValidator sudokuValidator = new SudokuValidator();
+		String absolutePath = args[0];
+		SudokuValidationResult result = sudokuValidator.validateSudokuFile(absolutePath );
+	}
 
 	public SudokuValidationResult validateSudokuFile(String absolutePath) throws IOException {
 
-		logger.info(String.format("validating %1$s" , absolutePath));
+		logger.info(String.format("validating file %1$s" , absolutePath));
 		SudokuBean sudokuBean = new SudokuBean();
 		sudokuBean.loadFromFile(absolutePath);
 		logger.info(sudokuBean.toString());
