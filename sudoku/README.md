@@ -19,3 +19,4 @@ M2_HOME=D:\apps\apache-maven-3.5.0\
 
 The test is provided with 2 files, one valid and one invalid, in src/test/resources, and 2 JUnit tests to test both scenarios
 
+To execute the tests, you can either git clone this repository, or download the sudoku.zip file, unzip it and, from the location of pom.xml file, execute `mvn clean package`
