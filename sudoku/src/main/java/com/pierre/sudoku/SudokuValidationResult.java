@@ -1,13 +1,13 @@
 package com.pierre.sudoku;
 /**
- * Holds validation resut and - in case of failure - the reason for failure
- * @author Pierre-Luigi
+ * Holds sudoku validation result and - in case of failure - the reason for failure
+ * @author Pierluigi
  *
  */
 
 public class SudokuValidationResult {
 	enum ResultCode {
-		SUCCESS, FAILURE;
+		VALID, INVALID;
 	}
 
 	ResultCode result = null;
@@ -25,12 +25,12 @@ public class SudokuValidationResult {
 	
 	// factory method
 	public static SudokuValidationResult createSuccess() {
-		return new SudokuValidationResult(ResultCode.SUCCESS, "");
+		return new SudokuValidationResult(ResultCode.VALID, "");
 	}
 
 	// factory method
 	public static SudokuValidationResult createFailure(String error) {
-		return new SudokuValidationResult(ResultCode.FAILURE, error);
+		return new SudokuValidationResult(ResultCode.INVALID, error);
 	}
 
 }

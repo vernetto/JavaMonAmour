@@ -8,26 +8,21 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
- * Hello world!
+ * Simple wrapper to invoke validation on a SudokuBean and print the result
+ * @author Pierluigi
  *
  */
 public class SudokuValidator {
 	static Logger logger = Logger.getLogger(SudokuValidator.class.getName());
 
-	
-	public static void main(String[] args) {
-		
-		logger.info("hello world!");
-	}
-
 	public SudokuValidationResult validateSudokuFile(String absolutePath) throws IOException {
 
-		System.out.println(absolutePath);
+		logger.info(String.format("validating %1$s" , absolutePath));
 		SudokuBean sudokuBean = new SudokuBean();
 		sudokuBean.loadFromFile(absolutePath);
 		logger.info(sudokuBean.toString());
 		SudokuValidationResult result = sudokuBean.validate();
-
+		logger.info(String.format("%1$s %2$s", result.result, result.validationError));
 		return result;
 
 	}

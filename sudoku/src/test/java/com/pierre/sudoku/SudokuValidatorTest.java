@@ -9,7 +9,9 @@ import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
+ * @author Pierluigi
  */
+
 public class SudokuValidatorTest 
     extends TestCase
 {
@@ -46,7 +48,7 @@ public class SudokuValidatorTest
     		logger.severe(e.getMessage());
     	}
     	
-        assertEquals( SudokuValidationResult.ResultCode.FAILURE, sudokuValidationResult);
+        assertEquals( sudokuValidationResult.validationError, SudokuValidationResult.ResultCode.INVALID, sudokuValidationResult.result);
     }
 
     
@@ -63,7 +65,7 @@ public class SudokuValidatorTest
     		logger.severe(e.getMessage());
     	}
     	
-        assertEquals( SudokuValidationResult.ResultCode.SUCCESS, sudokuValidationResult.result);
+        assertEquals( sudokuValidationResult.validationError, SudokuValidationResult.ResultCode.VALID, sudokuValidationResult.result);
     }
     
     /**
