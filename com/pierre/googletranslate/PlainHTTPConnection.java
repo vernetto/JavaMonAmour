@@ -49,26 +49,30 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class PlainHTTPConnection {
+	static final ConversionType conversionType = ConversionType.DE_EN; 
+	static final int repeatCount = 1;
 	static final String VOICE_EN = "<voice required=\"name = Microsoft Zira Desktop\">";
 	static final String VOICE_EN_END = "{{Bookmark=VOICE_EN}}";
 	static final String VOICE_DE_END = "{{Bookmark=VOICE_DE}}";
 	static final String VOICE_IT_END = "{{Bookmark=VOICE_IT}}";
 	static final String VOICE_DE = "<voice required=\"name = Scansoft Steffi_Full_22kHz\">";
 	static final String VOICE_IT = "<voice required=\"name = Scansoft Silvia_Dri20_22kHz\">";
-	static final String SLOW = "<rate absspeed=\"-2\">";
-	static final String NORMAL = "<rate absspeed=\"0\">";
-	static final String PAUSE = "{{Pause=1}}";
+	static final String SPEED_SLOW = "<rate absspeed=\"-2\">";
+	static final String SPEED_NORMAL = "<rate absspeed=\"0\">";
+	static final String SPEED_FAST = "<rate absspeed=\"2\">";
+	static final String PAUSE = "{{Pause=0}}";
 
+	public static final String inputFileNameOriginal = "D:\\pierre\\calibre\\Unknown\\PromessiSposi (126)\\PromessiSposi - Unknown.txt";
+	public static final String outputFileName = inputFileNameOriginal + ".out";
+	public static final String inputFileNamePrepared = inputFileNameOriginal + ".prepared";
+
+	
 	public static void main(String[] args) throws Throwable {
-		// String fileName =
-		// "D:\\pierre\\pictures\\libroindianer\\indianerall.txt";
 		Charset defaultCharset = StandardCharsets.UTF_8;
-		String inputFileName = "D:\\pierre\\calibre\\Der Idiot (rz)\\Dostojewski, Fjodor M (94)\\Dostojewski, Fjodor M - Der Idiot (rz).txt";
-		Path outputFilePath = Paths.get(inputFileName + ".out");
+		Path outputFilePath = Paths.get(outputFileName);
 		BufferedWriter writer = Files.newBufferedWriter(outputFilePath, defaultCharset);
 
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(new FileInputStream(inputFileName), defaultCharset));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputFileNamePrepared), defaultCharset));
 		String line;
 		int count = 0;
 
@@ -76,23 +80,15 @@ public class PlainHTTPConnection {
 			count++;
 			// System.out.println(line);
 			String[] splitLines = line.split(Pattern.quote("!?."));
-			for (String splitLine : splitLines) {
-				if (splitLine.trim().length() > 0) {
-					String translation = translateDeEn(splitLine);
-					translation = PrepareText.transformLatinToUTF8(translation);
-					for (int repeat = 0; repeat < 2; repeat++) {
-						out(NORMAL, writer);
-						out(VOICE_EN, writer);
-						out(translation, writer);
-						out(VOICE_EN_END, writer);
-						out(SLOW, writer);
-						out(VOICE_DE, writer);
-						out(splitLine, writer);
-						out(VOICE_DE_END, writer);
-						out(PAUSE, writer);
-					}
+			for (String originalLine : splitLines) {
+				if (originalLine.trim().length() > 0) {
+					
+					//enToDe(writer, originalLine);
+					//deToEn(writer, originalLine);
+					//deToEnDE1(writer, originalLine);
+					itToDe(writer, originalLine);
 
-					Thread.sleep(500);
+					Thread.sleep(300);
 				}
 			}
 		}
@@ -103,11 +99,91 @@ public class PlainHTTPConnection {
 
 	}
 
+	private static void enToDe(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateEnDe(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_NORMAL, writer);
+			out(VOICE_EN, writer);
+			out(originalLine, writer);
+			out(VOICE_EN_END, writer);
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(translatedLine, writer);
+			out(VOICE_DE_END, writer);
+			out(PAUSE, writer);
+		}
+	}
+	
+
+	private static void deToEn(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateDeEn(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_NORMAL, writer);
+			out(VOICE_EN, writer);
+			out(translatedLine, writer);
+			out(VOICE_EN_END, writer);
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(originalLine, writer);
+			out(VOICE_DE_END, writer);
+			out(PAUSE, writer);
+		}
+	}
+	
+	private static void deToEnDE1(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateDeEn(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(originalLine, writer);
+			out(VOICE_DE_END, writer);
+			out(PAUSE, writer);
+			out(SPEED_NORMAL, writer);
+			out(VOICE_EN, writer);
+			out(translatedLine, writer);
+			out(VOICE_EN_END, writer);
+		}
+	}
+	
+	private static void itToDe(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateItDe(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_FAST, writer);
+			out(VOICE_IT, writer);
+			out(originalLine, writer);
+			out(VOICE_IT_END, writer);
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(translatedLine, writer);
+			out(VOICE_DE_END, writer);
+			out(PAUSE, writer);
+		}
+	}
+
+
 	private static String translateItDe(String sourceText) {
 		String sourceLang = "it";
 		String targetLang = "de";
 		String matchedString = translate(sourceText, sourceLang, targetLang);
 		return matchedString;
+	}
+	
+	private static String translateEnRu(String sourceText) {
+		String sourceLang = "en";
+		String targetLang = "ru";
+		String matchedString = translate(sourceText, sourceLang, targetLang);
+		return matchedString;
+	}
+	
+	private static String translate(String sourceText) {
+		if (conversionType.equals(ConversionType.DE_EN)) return translateDeEn(sourceText);
+		if (conversionType.equals(ConversionType.EN_DE)) return translateEnDe(sourceText);
+		if (conversionType.equals(ConversionType.IT_DE)) return translateItDe(sourceText);
+		throw new IllegalArgumentException("unsupported conversion type " + conversionType);
 	}
 
 	private static String translateDeEn(String sourceText) {
@@ -158,7 +234,7 @@ public class PlainHTTPConnection {
 			for (int i = 0; i < (elements.length - 1) / 2; i++) {
 				matchedString += elements[i * 2] + " ";
 			}
-
+			inputStream.close();
 		} catch (Throwable t) {
 			t.printStackTrace();
 			System.out.println("ERROR!!! unable to translate " + sourceText);

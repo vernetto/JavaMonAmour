@@ -11,12 +11,14 @@ import java.util.stream.Stream;
 
 public class PrepareText {
 	public static void main(String[] args) throws Throwable {
-		String inputFileName = "D:\\pierre\\calibre\\Victor Klemperer\\LTI (93)\\LTI - Victor Klemperer.txt";
-		Path outputFilePath = Paths.get(inputFileName + ".out");
-		BufferedWriter writer = Files.newBufferedWriter(outputFilePath);
 
-		Path fileName = Paths.get(inputFileName);
 		Charset defaultCharset = StandardCharsets.UTF_8;
+
+		Path outputFilePath = Paths.get(PlainHTTPConnection.inputFileNamePrepared);
+		BufferedWriter writer = Files.newBufferedWriter(outputFilePath, defaultCharset);
+		
+
+		Path fileName = Paths.get(PlainHTTPConnection.inputFileNameOriginal);
 		try (Stream<String> lines = Files.lines(fileName, defaultCharset)) {
 			lines.forEachOrdered(s -> {
 				try {
@@ -37,8 +39,15 @@ public class PrepareText {
 			s = s.trim();
 			if (s.matches("[0-9]+") || s.length() == 0)
 				return result;
-			result = s.replace(".", ".\n").replace("?", "?\n").replace("!", "!\n").replace(":", ":\n")
+			
+			result = s;
+			result = result.replace(",", "\n").replace("“", " ").replace("”", " ").replace(" Ph.D. ", " PhD ").replace(" B.A. ", " BA ").replace(" F. ", " F ").replace("»", " ").replace("«", " ");
+			result = result.replace("\r", "\n").replace("\n\n", "\n");
+			
+			result = result.replace(" U.S. ", " USA ");
+			result = result.replace(".", ".\n").replace("?", "?\n").replace("!", "!\n").replace(":", ":\n")
 					.replace(";", ";\n").replace("\"", " ");
+			result = result.replace("\n ", "\n");
 
 		} catch (Throwable t) {
 			t.printStackTrace();
