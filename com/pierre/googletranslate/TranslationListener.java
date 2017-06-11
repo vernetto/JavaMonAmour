@@ -1,5 +1,5 @@
 package com.pierre.googletranslate;
 
 public interface TranslationListener {
-	void handleEvent(String message);
+	void handleEvent(String message, int progress);
 }

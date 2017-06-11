@@ -119,7 +119,7 @@ public class PlainHTTPConnection {
 					// itToDe(writer, originalLine);
 					esToDe(writer, originalLine);
 					String message = String.format("%1$d lines out of %2$d, missing time %3$d s", count, numOfLines, (numOfLines - count) * WAIT_TIME / 1000);
-					listener.handleEvent(message);
+					listener.handleEvent(message, (int) ((100 * count) / numOfLines) );
 					System.out.println(message);
 
 					Thread.sleep(WAIT_TIME);
