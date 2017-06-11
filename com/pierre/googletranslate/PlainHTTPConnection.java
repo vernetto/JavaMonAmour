@@ -2,7 +2,10 @@ package com.pierre.googletranslate;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 // REQUEST:
 // (Request-Line)	GET /translate_a/single?client=gtx&sl=en&tl=de&dt=t&q=how+are+you HTTP/1.1
@@ -47,32 +50,59 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.swing.JFrame;
 
 public class PlainHTTPConnection {
-	static final ConversionType conversionType = ConversionType.DE_EN; 
+	public static final int WAIT_TIME = 300;
+	static final ConversionType conversionType = ConversionType.DE_EN;
 	static final int repeatCount = 1;
 	static final String VOICE_EN = "<voice required=\"name = Microsoft Zira Desktop\">";
 	static final String VOICE_EN_END = "{{Bookmark=VOICE_EN}}";
 	static final String VOICE_DE_END = "{{Bookmark=VOICE_DE}}";
 	static final String VOICE_IT_END = "{{Bookmark=VOICE_IT}}";
+	static final String VOICE_SP_END = "{{Bookmark=VOICE_SP}}";
 	static final String VOICE_DE = "<voice required=\"name = Scansoft Steffi_Full_22kHz\">";
 	static final String VOICE_IT = "<voice required=\"name = Scansoft Silvia_Dri20_22kHz\">";
+	static final String VOICE_SP = "<voice required=\"name = Scansoft Isabel_Full_22kHz\">";
 	static final String SPEED_SLOW = "<rate absspeed=\"-2\">";
 	static final String SPEED_NORMAL = "<rate absspeed=\"0\">";
 	static final String SPEED_FAST = "<rate absspeed=\"2\">";
 	static final String PAUSE = "{{Pause=0}}";
 
-	public static final String inputFileNameOriginal = "D:\\pierre\\calibre\\Unknown\\PromessiSposi (126)\\PromessiSposi - Unknown.txt";
-	public static final String outputFileName = inputFileNameOriginal + ".out";
-	public static final String inputFileNamePrepared = inputFileNameOriginal + ".prepared";
-
+	private static String inputFileNameOriginal = "D:\\pierre\\calibre\\Mary Beard\\SPQR (124)\\SPQR - Mary Beard.txt";
+	public static String outputFileName = inputFileNameOriginal + ".out";
+	public static String inputFileNamePrepared = inputFileNameOriginal + ".prepared";
 	
+	public static TranslationListener listener = null;
+
 	public static void main(String[] args) throws Throwable {
+		PlainHTTPConnection.translate();
+	}
+
+	public static void setInputFile(String filename) {
+		inputFileNameOriginal= filename;
+		outputFileName = inputFileNameOriginal + ".out";
+		inputFileNamePrepared = inputFileNameOriginal + ".prepared";
+	}
+	
+	public static String getInputFile() {
+		return inputFileNameOriginal; 
+	}
+
+	public static void translate() throws IOException, FileNotFoundException, Throwable, InterruptedException {
 		Charset defaultCharset = StandardCharsets.UTF_8;
+		long numOfLines;
+		
+		try (Stream<String> lines = Files.lines(Paths.get(inputFileNamePrepared), defaultCharset)) {
+			  numOfLines = lines.count();
+		}
 		Path outputFilePath = Paths.get(outputFileName);
 		BufferedWriter writer = Files.newBufferedWriter(outputFilePath, defaultCharset);
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputFileNamePrepared), defaultCharset));
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(new FileInputStream(inputFileNamePrepared), defaultCharset));
 		String line;
 		int count = 0;
 
@@ -82,13 +112,17 @@ public class PlainHTTPConnection {
 			String[] splitLines = line.split(Pattern.quote("!?."));
 			for (String originalLine : splitLines) {
 				if (originalLine.trim().length() > 0) {
-					
-					//enToDe(writer, originalLine);
-					//deToEn(writer, originalLine);
-					//deToEnDE1(writer, originalLine);
-					itToDe(writer, originalLine);
 
-					Thread.sleep(300);
+					//enToDe(writer, originalLine);
+					// deToEn(writer, originalLine);
+					// deToEnDE1(writer, originalLine);
+					// itToDe(writer, originalLine);
+					esToDe(writer, originalLine);
+					String message = String.format("%1$d lines out of %2$d, missing time %3$d s", count, numOfLines, (numOfLines - count) * WAIT_TIME / 1000);
+					listener.handleEvent(message);
+					System.out.println(message);
+
+					Thread.sleep(WAIT_TIME);
 				}
 			}
 		}
@@ -96,7 +130,6 @@ public class PlainHTTPConnection {
 
 		br.close();
 		writer.close();
-
 	}
 
 	private static void enToDe(BufferedWriter writer, String originalLine) throws Throwable {
@@ -114,7 +147,6 @@ public class PlainHTTPConnection {
 			out(PAUSE, writer);
 		}
 	}
-	
 
 	private static void deToEn(BufferedWriter writer, String originalLine) throws Throwable {
 		String translatedLine = translateDeEn(originalLine);
@@ -131,7 +163,7 @@ public class PlainHTTPConnection {
 			out(PAUSE, writer);
 		}
 	}
-	
+
 	private static void deToEnDE1(BufferedWriter writer, String originalLine) throws Throwable {
 		String translatedLine = translateDeEn(originalLine);
 		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
@@ -147,7 +179,7 @@ public class PlainHTTPConnection {
 			out(VOICE_EN_END, writer);
 		}
 	}
-	
+
 	private static void itToDe(BufferedWriter writer, String originalLine) throws Throwable {
 		String translatedLine = translateItDe(originalLine);
 		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
@@ -164,7 +196,23 @@ public class PlainHTTPConnection {
 		}
 	}
 
+	private static void esToDe(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateEsDe(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_FAST, writer);
+			out(VOICE_SP, writer);
+			out(originalLine, writer);
+			out(VOICE_SP_END, writer);
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(translatedLine, writer);
+			out(VOICE_DE_END, writer);
+			out(PAUSE, writer);
+		}
+	}
 
+	
 	private static String translateItDe(String sourceText) {
 		String sourceLang = "it";
 		String targetLang = "de";
@@ -172,17 +220,27 @@ public class PlainHTTPConnection {
 		return matchedString;
 	}
 	
+	private static String translateEsDe(String sourceText) {
+		String sourceLang = "es";
+		String targetLang = "de";
+		String matchedString = translate(sourceText, sourceLang, targetLang);
+		return matchedString;
+	}
+
 	private static String translateEnRu(String sourceText) {
 		String sourceLang = "en";
 		String targetLang = "ru";
 		String matchedString = translate(sourceText, sourceLang, targetLang);
 		return matchedString;
 	}
-	
+
 	private static String translate(String sourceText) {
-		if (conversionType.equals(ConversionType.DE_EN)) return translateDeEn(sourceText);
-		if (conversionType.equals(ConversionType.EN_DE)) return translateEnDe(sourceText);
-		if (conversionType.equals(ConversionType.IT_DE)) return translateItDe(sourceText);
+		if (conversionType.equals(ConversionType.DE_EN))
+			return translateDeEn(sourceText);
+		if (conversionType.equals(ConversionType.EN_DE))
+			return translateEnDe(sourceText);
+		if (conversionType.equals(ConversionType.IT_DE))
+			return translateItDe(sourceText);
 		throw new IllegalArgumentException("unsupported conversion type " + conversionType);
 	}
 
@@ -241,5 +299,6 @@ public class PlainHTTPConnection {
 		}
 		return matchedString;
 	}
+
 
 }

@@ -12,13 +12,17 @@ import java.util.stream.Stream;
 public class PrepareText {
 	public static void main(String[] args) throws Throwable {
 
+		prepare();
+	}
+
+	public static void prepare() throws IOException {
 		Charset defaultCharset = StandardCharsets.UTF_8;
 
 		Path outputFilePath = Paths.get(PlainHTTPConnection.inputFileNamePrepared);
 		BufferedWriter writer = Files.newBufferedWriter(outputFilePath, defaultCharset);
 		
 
-		Path fileName = Paths.get(PlainHTTPConnection.inputFileNameOriginal);
+		Path fileName = Paths.get(PlainHTTPConnection.getInputFile());
 		try (Stream<String> lines = Files.lines(fileName, defaultCharset)) {
 			lines.forEachOrdered(s -> {
 				try {
