@@ -39,3 +39,4 @@ git diff master origin/master // compares local and remote
 git reset --hard origin master
 git diff --stage
 git diff HEAD
+

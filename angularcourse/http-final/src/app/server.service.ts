@@ -8,15 +8,15 @@ export class ServerService {
   constructor(private http: Http) {}
   storeServers(servers: any[]) {
     const headers = new Headers({'Content-Type': 'application/json'});
-    // return this.http.post('https://udemy-ng-http.firebaseio.com/data.json',
+    // return this.http.post('https://vernetto-ed8f3.firebaseio.com/data.json',
     //   servers,
     //   {headers: headers});
-    return this.http.put('https://udemy-ng-http.firebaseio.com/data.json',
+    return this.http.put('https://vernetto-ed8f3.firebaseio.com/data.json',
       servers,
       {headers: headers});
   }
   getServers() {
-    return this.http.get('https://udemy-ng-http.firebaseio.com/data')
+    return this.http.get('https://vernetto-ed8f3.firebaseio.com/data')
       .map(
         (response: Response) => {
           const data = response.json();
@@ -33,7 +33,7 @@ export class ServerService {
       );
   }
   getAppName() {
-    return this.http.get('https://udemy-ng-http.firebaseio.com/appName.json')
+    return this.http.get('https://vernetto-ed8f3.firebaseio.com/appName.json')
       .map(
         (response: Response) => {
           return response.json();
