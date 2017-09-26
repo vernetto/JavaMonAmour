@@ -1,0 +1,19 @@
+http://training.play-with-docker.com/helloworld/
+
+
+docker run 
+docker images
+docker ps -a
+docker login vernetto
+
+docker run -d --name redis redis:3.2.0
+
+// build from a Dockerfile
+docker build -t dockerapp:v0.2  
+
+docker stop <container_name>
+
+// None network container
+docker run -d --net none busybox sleep 1000
+
+docker network ls

@@ -1,0 +1,10 @@
+Security-Enhanced Linux (SELinux)
+Docker
+Kubernetes
+
+OpenShift Origin This is the upstream Open Source version of OpenShift that Red Hat’s
+OpenShift Enterprise, OpenShift Dedicated and OpenShift Online products are based
+on.
+
+https://www.openshift.org/minishift/
+Minishift libmachine 
