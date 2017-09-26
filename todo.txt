@@ -326,6 +326,7 @@ https://github.com/openshift/source-to-image
 
 https://github.com/coreos/etcd/blob/master/Documentation/learning/why.md
 
+https://hub.docker.com/r/openshift/origin-base/
  
  _____________
 
