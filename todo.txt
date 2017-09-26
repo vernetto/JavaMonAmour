@@ -146,6 +146,7 @@ ____________
 
 kerberos tutorial, klist , keytab file
 
+http://web.mit.edu/Kerberos/krb5-1.3/krb5-1.3.6/doc/krb5-admin.html
 
 _____________
 
