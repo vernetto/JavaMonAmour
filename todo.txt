@@ -319,7 +319,14 @@ https://linoxide.com/linux-how-to/setup-openshift-origin-centos-7/
 
 https://www.youtube.com/watch?v=XNdi4AC_EPQ
 
-_____________
+https://github.com/openshift/source-to-image
+
+ 
+
+https://github.com/coreos/etcd/blob/master/Documentation/learning/why.md
+
+ 
+ _____________
 
 fabric8
 
