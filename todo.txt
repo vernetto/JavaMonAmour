@@ -286,6 +286,7 @@ ____________
 
 http://www.adam-bien.com/roller/abien/entry/10_useful_java_ee_tools
 
+https://developers.redhat.com/resources/?referrer=jbd#!
  
 https://developers.redhat.com/quickstarts/eap/kitchensink-ear/
 
