@@ -334,7 +334,18 @@ https://github.com/openshift/source-to-image
 https://github.com/coreos/etcd/blob/master/Documentation/learning/why.md
 
 https://hub.docker.com/r/openshift/origin-base/
- 
+
+
+
+
+https://blog.openshift.com/create-s2i-builder-image/
+
+ 
+
+https://blog.openshift.com/part-2-creating-a-template-a-technical-walkthrough/
+
+ 
+
  _____________
 
 fabric8
