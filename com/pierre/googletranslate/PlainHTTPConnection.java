@@ -55,23 +55,35 @@ import java.util.stream.Stream;
 import javax.swing.JFrame;
 
 public class PlainHTTPConnection {
+	
+	enum FROMTOLANGUAGE {
+		ENTODE, DETOEN, DETOEN_DE1, ENTODE_DE1, ITTODE, ITTODE_DE1, ESTODE, FRTODE
+	}
 	public static final int WAIT_TIME = 300;
 	static final ConversionType conversionType = ConversionType.DE_EN;
 	static final int repeatCount = 1;
 	static final String VOICE_EN = "<voice required=\"name = Microsoft Zira Desktop\">";
+	static final String VOICE_DE = "<voice required=\"name = Scansoft Steffi_Full_22kHz\">";
+	static final String VOICE_IT = "<voice required=\"name = Scansoft Silvia_Dri20_22kHz\">";
+	static final String VOICE_SP = "<voice required=\"name = Scansoft Isabel_Full_22kHz\">";
+	static final String VOICE_FR = "<voice required=\"name = Scansoft Virginie_Dri20_22kHz\">";
+	static final String VOICE_FR_2 = "<voice required=\"name = Microsoft Hortense Desktop\">";
+	
+
 	static final String VOICE_EN_END = "{{Bookmark=VOICE_EN}}";
 	static final String VOICE_DE_END = "{{Bookmark=VOICE_DE}}";
 	static final String VOICE_IT_END = "{{Bookmark=VOICE_IT}}";
 	static final String VOICE_SP_END = "{{Bookmark=VOICE_SP}}";
-	static final String VOICE_DE = "<voice required=\"name = Scansoft Steffi_Full_22kHz\">";
-	static final String VOICE_IT = "<voice required=\"name = Scansoft Silvia_Dri20_22kHz\">";
-	static final String VOICE_SP = "<voice required=\"name = Scansoft Isabel_Full_22kHz\">";
+	static final String VOICE_FR_END = "{{Bookmark=VOICE_FR}}";
+
 	static final String SPEED_SLOW = "<rate absspeed=\"-2\">";
 	static final String SPEED_NORMAL = "<rate absspeed=\"0\">";
 	static final String SPEED_FAST = "<rate absspeed=\"2\">";
 	static final String PAUSE = "{{Pause=0}}";
 
-	private static String inputFileNameOriginal = "D:\\pierre\\calibre\\Mary Beard\\SPQR (124)\\SPQR - Mary Beard.txt";
+	static final FROMTOLANGUAGE language = FROMTOLANGUAGE.ITTODE;
+	
+	private static String inputFileNameOriginal = "D:\\pierre\\calibre\\Michael Elder\\La ragione dei granchi (162)\\La ragione dei granchi - Michael Elder.txt";
 	public static String outputFileName = inputFileNameOriginal + ".out";
 	public static String inputFileNamePrepared = inputFileNameOriginal + ".prepared";
 	
@@ -112,14 +124,28 @@ public class PlainHTTPConnection {
 			String[] splitLines = line.split(Pattern.quote("!?."));
 			for (String originalLine : splitLines) {
 				if (originalLine.trim().length() > 0) {
+					switch (language) {
+					case ENTODE:
+						enToDe(writer, originalLine); break;
+					case DETOEN:
+						deToEn(writer, originalLine); break;
+					case DETOEN_DE1:
+						deToEnDE1(writer, originalLine); break;
+					case ITTODE:
+						itToDe(writer, originalLine); break;
+					case ITTODE_DE1:
+						itToDeDE1(writer, originalLine); break;
+					case ESTODE:
+						esToDe(writer, originalLine); break;
+					case FRTODE:
+						frToDe(writer, originalLine); break;
 
-					//enToDe(writer, originalLine);
-					// deToEn(writer, originalLine);
-					// deToEnDE1(writer, originalLine);
-					// itToDe(writer, originalLine);
-					esToDe(writer, originalLine);
+					default:
+						break;
+					}
+
 					String message = String.format("%1$d lines out of %2$d, missing time %3$d s", count, numOfLines, (numOfLines - count) * WAIT_TIME / 1000);
-					listener.handleEvent(message, (int) ((100 * count) / numOfLines) );
+					if (listener != null) listener.handleEvent(message, (int) ((100 * count) / numOfLines) );
 					System.out.println(message);
 
 					Thread.sleep(WAIT_TIME);
@@ -196,6 +222,23 @@ public class PlainHTTPConnection {
 		}
 	}
 
+
+	private static void itToDeDE1(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateItDe(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(translatedLine, writer);
+			out(VOICE_DE_END, writer);
+			out(SPEED_FAST, writer);
+			out(VOICE_IT, writer);
+			out(originalLine, writer);
+			out(VOICE_IT_END, writer);
+			out(PAUSE, writer);
+		}
+	}
+	
 	private static void esToDe(BufferedWriter writer, String originalLine) throws Throwable {
 		String translatedLine = translateEsDe(originalLine);
 		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
@@ -204,6 +247,23 @@ public class PlainHTTPConnection {
 			out(VOICE_SP, writer);
 			out(originalLine, writer);
 			out(VOICE_SP_END, writer);
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(translatedLine, writer);
+			out(VOICE_DE_END, writer);
+			out(PAUSE, writer);
+		}
+	}
+
+	
+	private static void frToDe(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateFrDe(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_FAST, writer);
+			out(VOICE_FR, writer);
+			out(originalLine, writer);
+			out(VOICE_FR_END, writer);
 			out(SPEED_SLOW, writer);
 			out(VOICE_DE, writer);
 			out(translatedLine, writer);
@@ -222,6 +282,13 @@ public class PlainHTTPConnection {
 	
 	private static String translateEsDe(String sourceText) {
 		String sourceLang = "es";
+		String targetLang = "de";
+		String matchedString = translate(sourceText, sourceLang, targetLang);
+		return matchedString;
+	}
+
+	private static String translateFrDe(String sourceText) {
+		String sourceLang = "fr";
 		String targetLang = "de";
 		String matchedString = translate(sourceText, sourceLang, targetLang);
 		return matchedString;
