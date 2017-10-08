@@ -3,6 +3,11 @@ Kubernetes
 https://platform9.com/blog/kubernetes-docker-swarm-compared/
 https://kubernetes.io/docs/tutorials/kubernetes-basics/cluster-interactive/
 
+Docker training
+https://www.katacoda.com/courses/docker
+https://cloud.docker.com/swarm/vernetto/dashboard/onboarding/cloud-registry
+
+ 
 __________
 
 https://www.amazon.com/Derek-C.-Ashmore/e/B001K8Z5XS
@@ -275,6 +280,7 @@ CloudBees DevOptics
 ______________
 
 
+http://www.telerik.com/fiddler
 
  
 Arquillan
@@ -293,6 +299,20 @@ https://developers.redhat.com/quickstarts/eap/kitchensink-ear/
 _______
 OpenShift
 
+https://aws.amazon.com/about-aws/whats-new/2017/09/red-hat-openshift-container-platform-on-the-aws-cloud-quick-start-reference-deployment/
+
+quotas:
+https://docs.openshift.com/container-platform/latest/admin_guide/managing_projects.html
+https://github.com/openshift/origin/blob/master/examples/project-quota/README.md
+https://docs.openshift.com/container-platform/latest/admin_guide/quota.html
+
+ 
+https://docs.openshift.org/latest/getting_started/administrators.html
+sudo docker run -d --name "origin" --privileged --pid=host --net=host -v /:/rootfs:ro -v /var/run:/var/run:rw -v /sys:/sys -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
+        -v /var/lib/docker:/var/lib/docker:rw -v /var/lib/origin/openshift.local.volumes:/var/lib/origin/openshift.local.volumes:rslave openshift/origin start
+		
+
+		
 OpenShift if here to come in the near future, for this I would like to talk you guys into OpenShift on a weekly basis, this is my schedule I had in mind.
 
  
