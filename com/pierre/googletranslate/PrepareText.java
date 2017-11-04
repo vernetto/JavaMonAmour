@@ -51,7 +51,7 @@ public class PrepareText {
 			result = result.replace(" U.S. ", " USA ");
 			result = result.replace(".", ".\n").replace("?", "?\n").replace("!", "!\n").replace(":", ":\n")
 					.replace(";", ";\n").replace("\"", " ").replace('‘', ' ');
-			result = result.replace("\n ", "\n").replace("«", " ").replace("»", " ").replace("“", " ").replace("”", " ");
+			result = result.replace("\n ", "\n").replace("«", " ").replace("»", " ").replace("“", " ").replace("”", " ").replace("—", " ");
 
 		} catch (Throwable t) {
 			t.printStackTrace();
