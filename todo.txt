@@ -31,6 +31,7 @@ https://docs.jboss.org/author/display/AS71/Detyped+management+and+the+jboss-dmr+
 __________________
 
 Nexus 
+https://github.com/sonatype/nexus-public
 
 https://help.sonatype.com/display/NXRM3/Node+Packaged+Modules+and+npm+Registries
 
@@ -393,3 +394,27 @@ JENKINS
 https://www.infoq.com/articles/orch-pipelines-jenkins
 
 
+Spring boot
+https://javabrains.io/courses/spring_bootquickstart/
+
+
+Proxy
+https://github.com/adamfisk/LittleProxy
+
+
+https://github.com/wildfly-swarm/wildfly-swarm-examples/tree/master/camel
+
+
+mvn archetype:generate -DarchetypeArtifactId=jboss-javaee7-webapp-archetype -DarchetypeGroupId=org.jboss.archetype.eap -DarchetypeVersion=7.0.0
+
+This is the solution I would like to propose replace the temporary downstream REST authentication on TAN and the things we will discuss this afternoon.
+http://developers.redhat.com/blog/2016/10/04/how-red-hat-re-designed-its-single-sign-on-sso-architecture-and-why/
+About OpenID Connect
+https://keycloak.gitbooks.io/securing-client-applications-guide/content/v/2.4/topics/overview/supported-protocols.html
+and
+http://openid.net/connect/
+About support platforms
+https://keycloak.gitbooks.io/securing-client-applications-guide/content/v/2.4/topics/overview/supported-platforms.html
+
+ 
+ 
