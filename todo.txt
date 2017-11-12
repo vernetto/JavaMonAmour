@@ -417,4 +417,6 @@ About support platforms
 https://keycloak.gitbooks.io/securing-client-applications-guide/content/v/2.4/topics/overview/supported-platforms.html
 
  
+https://stackoverflow.com/questions/7693669/how-to-post-a-json-object-to-a-jax-rs-service
+
  
