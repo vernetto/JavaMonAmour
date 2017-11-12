@@ -45,31 +45,6 @@ add this to your settings.xml
 		</repository>
 	</repositories>
 
-	<servers>
-		<server>
-			<id>maven.oracle.com</id>
-			<username>publicpierre@gmail.com</username>
-			<password>Ernesto0</password>
-			<configuration>
-				<basicAuthScope>
-					<host>ANY</host>
-					<port>ANY</port>
-					<realm>OAM 11g</realm>
-				</basicAuthScope>
-				<httpConfiguration>
-					<all>
-						<params>
-							<property>
-								<name>http.protocol.allow-circular-redirects</name>
-								<value>%b,true</value>
-							</property>
-						</params>
-					</all>
-				</httpConfiguration>
-			</configuration>
-		</server>
-	</servers>
-
 	<pluginRepositories>
 		<pluginRepository>
 			<id>maven.oracle.com</id>
