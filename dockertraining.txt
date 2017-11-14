@@ -17,3 +17,46 @@ docker stop <container_name>
 docker run -d --net none busybox sleep 1000
 
 docker network ls
+
+
+·         Get yourself a VM and install Docker, https://www.docker.com/community-edition
+
+·         Go through this tutorial, which lets you build a wildfly and jdk image with an example war file. This will give you a bit of an impression how we will build images from JCT in the future http://rmpestano.github.io/blog/posts/a-simple-javaee-docker-example.html
+
+ 
+
+Try the following minimal instruction set on this image https://hub.docker.com/r/jboss/wildfly/
+
+ 
+
+·         docker pull jboss/wildfly (this will pull the image from docker hub onto your local registry)
+
+·         docker run –ti –user root jboss/wildfly /bin/bash ( go through the image file structure once you are in the container with bash)
+
+·         docker run –name test -p 8080:8080 -p 9990:9990 -d jboss/wildfly /opt/jboss/wildfly/bin/standalone.sh  -bmanagement 0.0.0.0  (this will run jboss in the background with name test)
+
+·         docker ps –a (check your running image)
+
+·         docker exec –ti test (debug into the running wildfly container and go around and then simply exit that debug session with “exit”)
+
+·         docker cp /somedirectory/somefile rob:/opt/jboss (experience how you can copy files in and out of your container)
+
+·         docker commit –m “my first commit” test mynewimage/latest (commit your changes to your new image)
+
+·         docker history mynewimage/latest (verify the commit history on your image)
+
+·         docker inspect test (see what inspect shows you through JSON)
+
+·         docker stop (this will stop and hibernate the container process)
+
+·         docker start (start it up again)
+
+·         docker logs –f test  (check the running log file on the container)
+
+·         docker stop (stop the container again)$
+
+·         docker rm (remove the container permently)
+
+ 
+ 
+ 
