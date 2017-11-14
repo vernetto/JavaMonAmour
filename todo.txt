@@ -419,4 +419,6 @@ https://keycloak.gitbooks.io/securing-client-applications-guide/content/v/2.4/to
  
 https://stackoverflow.com/questions/7693669/how-to-post-a-json-object-to-a-jax-rs-service
 
+http://docs.jboss.org/cdi/learn/userguide/CDI-user-guide.html
+
  
