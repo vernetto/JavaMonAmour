@@ -422,3 +422,34 @@ https://stackoverflow.com/questions/7693669/how-to-post-a-json-object-to-a-jax-r
 http://docs.jboss.org/cdi/learn/userguide/CDI-user-guide.html
 
  
+ 
+https://docs.jboss.org/hibernate/entitymanager/3.5/reference/en/html/querycriteria.html
+https://www.tutorialspoint.com/jsf/jsf_managed_beans.htm
+https://en.wikipedia.org/wiki/JavaServer_Faces
+https://docs.jboss.org/weld/reference/2.1.0.Final/en-US/html/intro.html
+https://docs.oracle.com/javaee/6/tutorial/doc/gjaam.html#gjacb
+https://www.youtube.com/watch?v=iHFz5XVT-H8
+https://www.youtube.com/results?sp=EgQYAigBUBQ%253D&search_query=doku+arch%C3%A4ologie
+https://www.opensubtitles.org/de/ssearch/sublanguageid-ger/idmovie-2006
+
+
+eclipse python development and remote debugging
+https://docs.python.org/3.6/tutorial/index.html
+
+
+http://www.adam-bien.com/roller/abien/entry/java_ee_7_java_8
+
+_____________
+
+
+https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html
+
+admrun@srp06012lx ~]$ /u01/app/java/JB1/bin/jstat -gc 12381
+S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT  
+5632.0 5120.0 3103.6  0.0   688128.0 554093.9 1398272.0   269194.1  123212.0 108373.1 17484.0 13478.2   5546   53.567   4      0.744   54.310
+
+[admrun@srp06012lx ~]$ /u01/app/java/JB1/bin/jcmd 12381 VM.native_memory
+12381:
+Native memory tracking is not enabled
+_____________
+
