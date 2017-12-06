@@ -1,7 +1,6 @@
 package org.pierre.websockets;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;

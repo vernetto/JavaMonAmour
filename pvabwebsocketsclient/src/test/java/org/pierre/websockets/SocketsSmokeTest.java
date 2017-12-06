@@ -30,7 +30,7 @@ public class SocketsSmokeTest {
 	//ws://localhost:41725/websockets-server/hello
 	@Test
 	public void pingServer() throws DeploymentException, IOException, URISyntaxException {
-		Session connectToServer = this.container.connectToServer(this.endpoint, new URI("ws://localhost:41725/websockets-server/hello"));
+		Session connectToServer = this.container.connectToServer(this.endpoint, new URI("ws://localhost:8080/websockets-server-1.0-SNAPSHOT/hello"));
 		this.endpoint.sendMessage("hello from client");
 	}
 }
