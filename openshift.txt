@@ -119,3 +119,7 @@ oadm policy remove-cluster-role-from-group self-provisioner system:authenticated
 
 #list authenticated users
 oc get users
+
+#list possible policies
+oc adm policy
+
