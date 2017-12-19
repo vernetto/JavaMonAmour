@@ -123,3 +123,14 @@ oc get users
 #list possible policies
 oc adm policy
 
+#create quota   
+oc create quota 
+oc describe quota
+
+#prune builds
+oc adm prune builds
+
+# Start streaming the logs of the most recent build of the openldap build config.
+oc logs -f bc/openldap
+
+

@@ -1,6 +1,18 @@
 http://training.play-with-docker.com/helloworld/
 
 
+
+docker pull centos
+#here nothing happens
+docker run centos
+docker container ls
+docker run -i -t centos
+yum install man
+yum install ansible
+exit
+docker commit 4f0b435cdbd7 centosansible
+
+
 docker run 
 docker images
 docker ps -a
