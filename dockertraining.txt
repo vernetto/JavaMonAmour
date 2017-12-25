@@ -1,5 +1,9 @@
 http://training.play-with-docker.com/helloworld/
 
+docker info
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl status docker
 
 
 docker pull centos
@@ -87,4 +91,127 @@ docker login             # Log in this CLI session using your Docker credentials
 docker tag <image> username/repository:tag  # Tag <image> for upload to registry
 docker push username/repository:tag            # Upload tagged image to registry
 docker run username/repository:tag                   # Run image from a registry
+
+
+
+________________
+
+Turnbull Docker in action
+http://www.javamonamour.org/2017/09/books-docker-in-action.html
+
+sudo docker run -i -t ubuntu /bin/bash
+hostname
+cat /etc/hosts
+docker stop bob_the_container
+
+docker run --name bob_the_container -i -t ubuntu /bin/bash
+
+docker stop bob_the_container
+ps -ef | grep docker | wc -l
+docker start bob_the_container
+ps -ef | grep docker | wc -l
+
+docker attach bob_the_container
+docker attach --sig-proxy=false bob_the_container
+
+docker run --name daemon_dave -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
+docker exec -ti daemon_dave /bin/bash
+cat /etc/hosts
+172.17.0.2	b027eaed9f5f
+
+
+docker logs -ft daemon_dave
+
+docker top daemon_dave
+docker kill daemon_dave
+
+docker rm daemon_dave
+docker ps -q -a
+
+bootfs, rootfs, 
+
+copy on write
+
+
+docker search puppet
+
+sudo docker run -i -t ubuntu /bin/bash
+apt-get -yqq update
+apt-get -y install apache2
+exit
+docker commit 3aa9a58e0eb7 vernetto/apache2
+docker history vernetto/apache2
+
+
+Dockerfile
+
+# Version: 0.0.1
+FROM ubuntu:14.04
+MAINTAINER James Turnbull "james@example.com"
+RUN apt-get update
+RUN apt-get install -y nginx
+RUN echo 'Hi, I am in your container' \
+>/usr/share/nginx/html/index.html
+EXPOSE 80
+
+
+docker build --no-cache -t="vernetto/static_web" .
+
+"Docker requires command(s) to keep running in the foreground. Otherwise, it thinks that application is stopped and it shutdown the container."
+
+docker run -d -p 80 --name static_web vernetto/static_web nginx -g "daemon off;"
+
+#get info on ports
+docker ps -l
+#to know to which specific port you are mapping the 80
+docker port <cid> 80
+
+docker run -d -p 8080:80 --name static_web vernetto/static_web nginx -g "daemon off;"
+
+
+simple vaffanculo example
+
+FROM alpine:latest
+CMD echo "ciao sono vaffanculo"
+
+docker build -t="vaffanculo" .
+docker run vaffanculo
+docker run vaffanculo echo "stronzo"
+
+sudo docker push static_web
+
+sudo docker run -d -p 5000:5000 registry
+
+docker images vernetto/static_web
+docker tag a5605d3531c0 localhost:5000/vernetto/static_web
+docker push localhost:5000/vernetto/static_web
+
+
+https://www.dockerbook.com/
+https://github.com/turnbullpress/dockerbook-code
+
+
+redis:
+docker run --name some-redis -d redis
+
+ip a show docker0
+ip a | grep veth | wc -l
+
+
+_______________
+
+
+# Stop all containers
+docker stop $(docker ps -a -q)
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+
+#remove unused images
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+#remove stopped containers
+docker rm $(docker ps -qa --no-trunc --filter "status=exited")
+
+docker inspect --format='{{ .State.Running }}' daemon_dave
 

@@ -15,7 +15,9 @@ https://docs.openshift.com/container-platform/3.7/welcome/index.html
 login: oc login -u system:admin
 logout: oc logout
 
-configuration: vi ~/.kube/config; oc config view
+configuration: 
+vi ~/.kube/config; 
+oc config view
 
 create project: oc new-project projectname
 create app from github: oc new-app $GIT_URL
