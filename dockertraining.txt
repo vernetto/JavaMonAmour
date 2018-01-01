@@ -198,6 +198,12 @@ ip a show docker0
 ip a | grep veth | wc -l
 
 
+
+/usr/lib/systemd/system/docker.service
+
+curl -s "http://docker.example.com:2375/images/json" | python -mjson.tool
+curl -s "http://docker.example.com:2375/containers/json?all=1" | python -mjson.tool
+
 _______________
 
 
