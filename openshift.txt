@@ -126,8 +126,9 @@ oc get users
 oc adm policy
 
 #create quota   
-oc create quota 
+oc create quota dev-quota --hard=services=10 --hard=cpu=1300m --hard=memory=1.5Gi
 oc describe quota
+oc get resourcequota
 
 #prune builds
 oc adm prune builds
