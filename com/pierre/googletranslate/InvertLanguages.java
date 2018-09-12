@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class InvertLanguages {
-	static final String FILENAME = "D:\\pierre\\calibre\\Pier Paolo Pasolini\\Descrizioni di descrizioni (218)\\Descrizioni di descrizioni - Pier Paolo Pasolini.txt.transout";
-	static final String IT = "{{Bookmark=VOICE_IT}}";
-	static final String DE = "{{Bookmark=VOICE_DE}}";
+	static final String FILENAME = "D:\\pierre\\pictures\\librolafaille\\librolafaille.txt.transout";
+	static final String FIRST = "{{Bookmark=VOICE_FR}}";
+	static final String SECOND = "{{Bookmark=VOICE_DE}}";
 
 	public static void main(String[] args) throws IOException {
 		List<String> list = new ArrayList<>();
@@ -26,13 +26,13 @@ public class InvertLanguages {
 			String line = list.get(i);
 			if (inIT) {
 				buffer.add(line);
-				if (line.contains(IT)) {
+				if (line.contains(FIRST)) {
 					inIT = false;
 				}
 			}
 			else {
 				out.add(line);
-				if (line.contains(DE)) {
+				if (line.contains(SECOND)) {
 					inIT = true;
 					out.addAll(buffer);
 					buffer = new ArrayList<>();
