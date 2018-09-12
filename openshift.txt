@@ -20,7 +20,38 @@ vi ~/.kube/config;
 oc config view
 
 create project: oc new-project projectname
-create app from github: oc new-app $GIT_URL
+
+To create an application using a Git repository in a local directory:
+$ oc new-app /path/to/source/code
+
+To create an application using a remote Git repository:
+$ oc new-app https://github.com/openshift/cakephp-ex
+
+to use a branch beta4:
+oc new-app https://github.com/openshift/ruby-hello-world.git#beta4
+
+To create an application using a private remote Git repository:
+$ oc new-app https://github.com/youruser/yourprivaterepo --sourcesecret=
+yoursecret
+
+new-app -> buildconfig -> image + deploymentconfig + service
+
+Jenkinsfile -> Pipeline Build Strategy
+Dockerfile -> Docker build strategy
+
+Specify explicitly an image "myproject/my-ruby":
+oc new-app myproject/my-ruby~https://github.com/openshift/ruby-helloworld.git
+also with tag:
+oc new-app openshift/ruby-20-centos7:latest~/home/user/code/my-ruby-app
+
+Create first a yaml file, then execute it (try-run):
+oc new-app https://github.com/openshift/ruby-hello-world -o yaml > myapp.yaml
+vi myapp.yaml
+oc create -f myapp.yaml
+
+List all Templates, Image Streams, Docker Images with "php" in it:
+oc new-app --search php
+
 
 list all projects: oc get project
 

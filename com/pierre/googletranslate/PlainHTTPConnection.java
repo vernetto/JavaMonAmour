@@ -54,13 +54,15 @@ import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 
+
+
 public class PlainHTTPConnection {
 	
 	enum FROMTOLANGUAGE {
 		ENTODE, DETOEN, DETOEN_DE1, ENTODE_DE1, ITTODE, ITTODE_DE1, ESTODE, FRTODE
 	}
-	public static final int WAIT_TIME = 300;
-	static final ConversionType conversionType = ConversionType.DE_EN;
+	public static final int WAIT_TIME = 500;
+	static final ConversionType conversionType = ConversionType.IT_DE;
 	static final int repeatCount = 1;
 	static final String VOICE_EN = "<voice required=\"name = Microsoft Zira Desktop\">";
 	static final String VOICE_DE = "<voice required=\"name = Scansoft Steffi_Full_22kHz\">";
@@ -81,13 +83,13 @@ public class PlainHTTPConnection {
 	static final String SPEED_FAST = "<rate absspeed=\"2\">";
 	static final String PAUSE = "{{Pause=0}}";
 
-	static final FROMTOLANGUAGE language = FROMTOLANGUAGE.ITTODE;
+	static final FROMTOLANGUAGE language = FROMTOLANGUAGE.ENTODE_DE1;
 	
-	private static String inputFileNameOriginal = "D:\\pierre\\calibre\\Michael Elder\\La ragione dei granchi (162)\\La ragione dei granchi - Michael Elder.txt";
-	public static String outputFileName = inputFileNameOriginal + ".out";
+	private static String inputFileNameOriginal = "D:\\pierre\\calibre\\Ed Viesturs\\The Will to Climb_ Obsession and Co (220)\\The Will to Climb_ Obsession an - Ed Viesturs.txt";
+	public static String outputFileName = inputFileNameOriginal + ".transout";
 	public static String inputFileNamePrepared = inputFileNameOriginal + ".prepared";
 	
-	public static TranslationListener listener = null;
+	//public static TranslationListener listener = null;
 
 	public static void main(String[] args) throws Throwable {
 		PlainHTTPConnection.translate();
@@ -95,7 +97,7 @@ public class PlainHTTPConnection {
 
 	public static void setInputFile(String filename) {
 		inputFileNameOriginal= filename;
-		outputFileName = inputFileNameOriginal + ".out";
+		outputFileName = inputFileNameOriginal + ".transout";
 		inputFileNamePrepared = inputFileNameOriginal + ".prepared";
 	}
 	
@@ -120,13 +122,15 @@ public class PlainHTTPConnection {
 
 		while ((line = br.readLine()) != null) {
 			count++;
-			// System.out.println(line);
+			System.out.println(line);
 			String[] splitLines = line.split(Pattern.quote("!?."));
 			for (String originalLine : splitLines) {
 				if (originalLine.trim().length() > 0) {
 					switch (language) {
 					case ENTODE:
 						enToDe(writer, originalLine); break;
+					case ENTODE_DE1:
+						enToDeDE1(writer, originalLine); break;						
 					case DETOEN:
 						deToEn(writer, originalLine); break;
 					case DETOEN_DE1:
@@ -145,7 +149,7 @@ public class PlainHTTPConnection {
 					}
 
 					String message = String.format("%1$d lines out of %2$d, missing time %3$d s", count, numOfLines, (numOfLines - count) * WAIT_TIME / 1000);
-					if (listener != null) listener.handleEvent(message, (int) ((100 * count) / numOfLines) );
+					//if (listener != null) listener.handleEvent(message, (int) ((100 * count) / numOfLines) );
 					System.out.println(message);
 
 					Thread.sleep(WAIT_TIME);
@@ -173,6 +177,24 @@ public class PlainHTTPConnection {
 			out(PAUSE, writer);
 		}
 	}
+
+	private static void enToDeDE1(BufferedWriter writer, String originalLine) throws Throwable {
+		String translatedLine = translateEnDe(originalLine);
+		translatedLine = PrepareText.transformLatinToUTF8(translatedLine);
+		for (int repeat = 0; repeat < repeatCount; repeat++) {
+			out(SPEED_SLOW, writer);
+			out(VOICE_DE, writer);
+			out(translatedLine, writer);
+			out(VOICE_DE_END, writer);
+			out(SPEED_NORMAL, writer);
+			out(VOICE_EN, writer);
+			out(originalLine, writer);
+			out(VOICE_EN_END, writer);
+			out(PAUSE, writer);
+		}
+	}
+	
+	
 
 	private static void deToEn(BufferedWriter writer, String originalLine) throws Throwable {
 		String translatedLine = translateDeEn(originalLine);
@@ -335,8 +357,10 @@ public class PlainHTTPConnection {
 		String matchedString = "";
 		try {
 
-			String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl="
-					+ targetLang + "&dt=t&q=" + URLEncoder.encode(sourceText, "UTF-8") + "&ie=UTF-8&oe=UTF-8";
+			String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + URLEncoder.encode(sourceText, "UTF-8") + "&ie=UTF-8&oe=UTF-8";
+
+			// https://translate.google.com/translate_a/single?client=t&sl=it&tl=de&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&source=btn&ssel=0&tsel=0&kc=0&tk=129376.499397&q=buongiorno
+			//String url = "https://translate.google.com/translate_a/single?client=t&sl=" + sourceLang + "&tl=" + targetLang + "&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&source=btn&ssel=0&tsel=0&kc=0&tk=129376.499397&q=" + URLEncoder.encode(sourceText, "UTF-8"); 
 			String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0";
 			URL theURL = new URL(url);
 			URLConnection connection = theURL.openConnection();

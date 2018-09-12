@@ -24,7 +24,7 @@ public class Gui extends JPanel implements TranslationListener {
 	private static final long serialVersionUID = 1L;
 
 	public Gui() {
-		PlainHTTPConnection.listener = this;
+		//PlainHTTPConnection.listener = this;
 
 		JLabel label1 = new JLabel("File to prepare and translate:");
 		add(label1);

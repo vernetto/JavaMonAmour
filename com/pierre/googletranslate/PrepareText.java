@@ -45,13 +45,13 @@ public class PrepareText {
 				return result;
 			
 			result = s;
-			result = result.replace(",", "\n").replace("�", " ").replace("�", " ").replace(" Ph.D. ", " PhD ").replace(" B.A. ", " BA ").replace(" F. ", " F ").replace("�", " ").replace("�", " ");
+			result = result.replace(",", "\n").replace("“", " ").replace("”", " ").replace(" Ph.D. ", " PhD ").replace(" B.A. ", " BA ").replace(" F. ", " F ").replace("»", " ").replace("«", " ");
 			result = result.replace("\r", "\n").replace("\n\n", "\n");
 			
-			result = result.replace(" U.S. ", " USA ");
+			result = result.replace(" U.S. ", " USA ").replace("’", " ");
 			result = result.replace(".", ".\n").replace("?", "?\n").replace("!", "!\n").replace(":", ":\n")
-					.replace(";", ";\n").replace("\"", " ").replace('�', ' ');
-			result = result.replace("\n ", "\n").replace("�", " ").replace("�", " ").replace("�", " ").replace("�", " ").replace("�", " ");
+					.replace(";", ";\n").replace("\"", " ").replace('‘', ' ');
+			result = result.replace("\n ", "\n").replace("«", " ").replace("»", " ").replace("“", " ").replace("”", " ").replace("—", " ");
 
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -63,10 +63,10 @@ public class PrepareText {
 	public static String transformLatinToUTF8(String s) {
 		String returnValue = "";
 		try {
-			returnValue = s.replace("Ü", "�").replace("ü", "�").replace("ä", "�").replace("ö", "�")
-					.replace("ß", "ss").replace("é", "�").replace("ý", "�").replace("Ä", "�").replace("á", "�")
-					.replace("ó", "�").replace("ò", "�").replace("ö", "�").replace("ó", "�").replace("Ö", "�")
-					.replace("è", "�").replace("í", "�").replace("à", "�").replace("ê", "�").replace("â", "�");
+			returnValue = s.replace("Ãœ", "Ü").replace("Ã¼", "ü").replace("Ã¤", "ä").replace("Ã¶", "ö")
+					.replace("ÃŸ", "ss").replace("Ã©", "é").replace("Ã½", "ý").replace("Ã„", "Ë").replace("Ã¡", "á")
+					.replace("Ã³", "ó").replace("Ã²", "ò").replace("Ã¶", "ö").replace("Ã³", "ó").replace("Ã–", "Ö")
+					.replace("Ã¨", "è").replace("Ã­", "í").replace("Ã ", "à").replace("Ãª", "ê").replace("Ã¢", "â");
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

@@ -139,3 +139,13 @@ kubectl create -f pod.yml
 TUTORIALDIR=src/pippo-189911/gke_guestbook-2017-12-28-06-13
 
 	  
+cloud compute machine-types list
+NAME            ZONE                       CPUS  MEMORY_GB  DEPRECATED
+f1-micro        us-central1-f              1     0.60
+g1-small        us-central1-f              1     1.70
+n1-highcpu-16   us-central1-f              16    14.40
+n1-highcpu-2    us-central1-f              2     1.80
+n1-highcpu-32   us-central1-f              32    28.80
+
+
+	  
