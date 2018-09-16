@@ -1,0 +1,170 @@
+Security-Enhanced Linux (SELinux)
+Docker
+Kubernetes
+
+OpenShift Origin This is the upstream Open Source version of OpenShift that Red Hat’s
+OpenShift Enterprise, OpenShift Dedicated and OpenShift Online products are based
+on.
+
+https://www.openshift.org/minishift/
+Minishift libmachine 
+
+https://docs.openshift.com/container-platform/3.7/welcome/index.html
+
+
+login: oc login -u system:admin
+logout: oc logout
+
+configuration: 
+vi ~/.kube/config; 
+oc config view
+
+create project: oc new-project projectname
+
+To create an application using a Git repository in a local directory:
+$ oc new-app /path/to/source/code
+
+To create an application using a remote Git repository:
+$ oc new-app https://github.com/openshift/cakephp-ex
+
+to use a branch beta4:
+oc new-app https://github.com/openshift/ruby-hello-world.git#beta4
+
+To create an application using a private remote Git repository:
+$ oc new-app https://github.com/youruser/yourprivaterepo --sourcesecret=
+yoursecret
+
+new-app -> buildconfig -> image + deploymentconfig + service
+
+Jenkinsfile -> Pipeline Build Strategy
+Dockerfile -> Docker build strategy
+
+Specify explicitly an image "myproject/my-ruby":
+oc new-app myproject/my-ruby~https://github.com/openshift/ruby-helloworld.git
+also with tag:
+oc new-app openshift/ruby-20-centos7:latest~/home/user/code/my-ruby-app
+
+Create first a yaml file, then execute it (try-run):
+oc new-app https://github.com/openshift/ruby-hello-world -o yaml > myapp.yaml
+vi myapp.yaml
+oc create -f myapp.yaml
+
+List all Templates, Image Streams, Docker Images with "php" in it:
+oc new-app --search php
+
+
+list all projects: oc get project
+
+select project: oc project myproject
+display project status: oc status
+
+delete all in project: oc delete all --all
+
+oc login -u system:admin
+oc adm policy add-cluster-role-to-user cluster-admin admin
+
+______________
+
+sudo oc cluster up --skip-registry-check=true
+
+Starting OpenShift using openshift/origin:v3.7.0 ...
+OpenShift server started.
+
+The server is accessible via web console at:
+    https://127.0.0.1:8443
+
+You are logged in as:
+    User:     developer
+    Password: <any value>
+
+To login as administrator:
+    oc login -u system:admin
+
+	
+
+[centos@localhost ~]$ docker ps
+CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS                  PORTS               NAMES
+b973d3aec438        openshift/origin                  "/bin/bash -c '#/bin…"   1 second ago        Up Less than a second                       k8s_storage-setup-job_persistent-volume-setup-b28pn_default_f2624584-e117-11e7-bf97-08002755efa0_0
+4991d5c095e4        openshift/origin-pod:v3.7.0       "/usr/bin/pod"           2 seconds ago       Up 1 second                                 k8s_POD_persistent-volume-setup-b28pn_default_f2624584-e117-11e7-bf97-08002755efa0_0
+48fe93a6d6d0        openshift/origin:v3.7.0           "/usr/bin/openshift …"   12 minutes ago      Up 12 minutes                               origin
+
+
+
+_____________
+
+DO280
+
+Openshift, built on Kubernetes. infrastructure as code, CI, CD
+
+#list nodes
+oc get nodes
+
+#list specific node
+oc get node <node>
+
+#describe node
+oc describe node <node>
+
+#delete node
+oc delete node <node>
+
+
+#label node
+oc label node <node> <key_1>=<value_1> 
+
+#help on labels
+oc label -h
+
+#list pods on node
+oc adm manage-node <node1> <node2> --list-pods [--pod-selector=<pod_selector>] [-o json|yaml]
+	
+#make node unschedulable
+oc adm  manage-node <node1> <node2> --schedulable=false
+
+#evacuate pods dry-run only
+oc adm  manage-node <node1> <node2> --evacuate --dry-run [--pod-selector=<pod_selector>]
+
+#list pods ready to run
+oc get pods 
+oc get pod
+oc get po
+
+#help
+oc --help
+
+#????
+oc get events
+
+#display endpoints
+oc get ep
+
+#location of master config file
+/var/lib/origin/openshift.local.config/master/master-config.yaml
+
+#create default template for new projects
+oadm create-bootstrap-project-template -o yaml > template.yaml
+
+#change default 
+oc create -f template.yaml -n default
+
+#remove self-provisioner role
+oadm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth
+
+#list authenticated users
+oc get users
+
+#list possible policies
+oc adm policy
+
+#create quota   
+oc create quota dev-quota --hard=services=10 --hard=cpu=1300m --hard=memory=1.5Gi
+oc describe quota
+oc get resourcequota
+
+#prune builds
+oc adm prune builds
+
+# Start streaming the logs of the most recent build of the openldap build config.
+oc logs -f bc/openldap
+
+

@@ -1,0 +1,3 @@
+TUTORIALDIR=src/pippo-189911/gke_guestbook-2017-12-25-22-31
+git clone https://github.com/GoogleCloudPlatform/kubernetes-engine-samples.git $TUTORIALDIR
+

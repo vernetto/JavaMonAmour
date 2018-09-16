@@ -1,0 +1,14 @@
+mvn help:effective-settings  // dump mvn settings
+mvn -X // debug mode, traces location of settings.xml
+
+mvn install --settings c:\user\settings.xml --global-settings c:\global\settings.xml  // override location of settings.xml
+
+normal location of settings.xml :
+The Maven install: $M2_HOME/conf/settings.xml
+A user's install: ${user.home}/.m2/settings.xml
+they are merged, user-specific settings.xml being dominant
+
+
+
+mvn spring-boot:run // run spring-boot application
+

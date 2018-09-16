@@ -1,0 +1,457 @@
+Kubernetes
+
+https://platform9.com/blog/kubernetes-docker-swarm-compared/
+https://kubernetes.io/docs/tutorials/kubernetes-basics/cluster-interactive/
+
+Docker training
+https://www.katacoda.com/courses/docker
+https://cloud.docker.com/swarm/vernetto/dashboard/onboarding/cloud-registry
+
+ 
+__________
+
+https://www.amazon.com/Derek-C.-Ashmore/e/B001K8Z5XS
+
+ 
+
+http://admin4j.net/
+
+
+______________
+
+https://swagger.io/
+
+
+______________
+
+
+JBOSS
+https://docs.jboss.org/author/display/AS71/Detyped+management+and+the+jboss-dmr+library?_sscc=t
+
+__________________
+
+Nexus 
+https://github.com/sonatype/nexus-public
+
+https://help.sonatype.com/display/NXRM3/Node+Packaged+Modules+and+npm+Registries
+
+
+https://issues.sonatype.org/browse/NEXUS-10121
+
+mvn deploy:deploy-file -DpomFile=lib-ver.pom -Dfile=lib-ver.jar -Djavadoc=lib-ver-javadoc.jar -DrepositoryId=thirdparty  -Durl=http://yournexus/repository/thirdparty/
+
+ 
+
+see https://stackoverflow.com/questions/37543120/how-to-manually-deploy-artifacts-in-nexus-repository-manager-oss-3/39757111#39757111
+
+https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
+http://maven.apache.org/plugins/maven-deploy-plugin/usage.html
+
+curl -v -u admin:admin123 --upload-file bar.jar http://my.nexus.server:8081/repository/maven-releases/org/foo/1.0/bar-1.0.jar
+
+https://issues.sonatype.org/browse/NEXUS-10121
+
+______________
+
+org.apache.commons.lang3.exception.ContextedRuntimeException
+
+______________
+
+AWS
+
+https://dzone.com/articles/the-rise-of-lambda?edition=327492&utm_source=Daily%20Digest&utm_medium=email&utm_campaign=Daily%20Digest%202017-09-23
+
+______________
+
+
+JIRA
+
+https://de.atlassian.com/software/jira/pricing?tab=self-hosted
+
+ 
+______________
+
+
+https://httpd.apache.org/docs/current/mod/mod_proxy.html
+
+_____________
+
+
+Hi Marc,
+
+ 
+
+I couple of valuable tips can be learned from this book, which actually should be taken into consideration before starting engineering frameworks around REST.
+
+ 
+
+·         Tracking business transaction boundaries over complex REST call graphs, wrapping up diverted downstream REST calls from one user business transaction through correlation id’s, chapter tracking transactions.
+
+·         Advanced context aware exception handling with commons lang3 contexted runtime exceptions.
+
+·         And logging REST calls with MDC and Admin4J logging request filters.
+
+ 
+
+All software is for free and practised widely.
+
+ 
+
+Cheers Rob
+
+
+Hi Armin,
+
+ 
+
+Microservices for Java EE Architects: Addendum for The Java EE Architect's Handbook
+
+ 
+
+https://www.goodreads.com/book/show/29988611-microservices-for-java-ee-architects
+
+ 
+
+ 
+
+Specifically check the sections on logging and transaction tracking
+
+ 
+
+Lot of questions get answered here that should be considered before creating that core framework, like https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it
+
+ 
+
+ 
+
+Great book
+
+ 
+
+________________
+
+
+dynatrace demo
+
+
+___________
+
+
+sonarqube https://docs.sonarqube.org/display/SONAR/Documentation
+
+
+__________
+
+detyped api
+
+https://docs.jboss.org/author/display/AS71/Detyped+management+and+the+jboss-dmr+library?_sscc=t
+
+
+__________
+
+
+JAM http://www.mastertheboss.com/jboss-server/jboss-monitoring/monitor-your-jboss-resources-using-the-dmr-api
+
+
+____________
+
+
+kerberos tutorial, klist , keytab file
+
+http://web.mit.edu/Kerberos/krb5-1.3/krb5-1.3.6/doc/krb5-admin.html
+
+_____________
+
+
+gluster http://docs.gluster.org/en/latest/
+
+
+__________
+
+
+
+___________
+
+sonatype webex https://sonatype.webex.com/sonatype/j.php?MTID=md788eb0ea410274e8a1c329c3c0f3662
+
+__________
+
+
+
+
+
+
+Hi Pierre,
+
+ 
+
+Books wildfly administration and JEE development with wildfly are good start reads, I put them online, you can download these books from the net.
+
+ 
+
+https://wiki.juliusbaer.com/display/JCC/Java+Books
+
+ 
+
+And getting OpenShift up and running with oc cluster up
+
+ 
+
+https://stefanopicozzi.blog/2016/12/18/getting-started-with-oc-cluster-updown/
+
+ 
+
+Up and running really quickly with “oc cluster up”
+
+ 
+
+_______________
+
+
+adam bien
+
+http://press.adam-bien.com/
+http://www.airhacks.com/
+
+http://effectivejavaee.com/
+http://adambien.blog/roller/abien/
+
+
+____________
+
+https://www.primefaces.org/showcase/
+
+_________
+
+https://issues.sonatype.org/browse/NEXUS-10121  they provide a "component upload UI replacement" and starting to work on a UI addition https://github.com/TOPdesk/nexus3-artifact-upload ...
+
+but the batch upload can apparently be done only with maven deploy:deploy-file . Someone prepared a Maven batch uploader https://github.com/ronbadur/maven-artifacts-uploader
+
+ 
+
+____________
+
+ 
+ 
+ Cloudbees
+ 
+today applications are made 80%-90% of reusable components
+
+ 
+
+1 security expert for every 100-150 developers
+
+ 
+
+using an Eclipse/Intellij Plugin with security info for each component EMPOWERS developers to be drivers of security decision
+
+ 
+
+coding from the beginning with a safe version of a component avoid painful migrations later (110 times cheaper to fix in development than in PROD)
+
+ 
+
+for each component you have: popularity, licence risks, security alerts
+
+ 
+
+you can enforce the right component version by using the dependencyManagement tag in maven POM
+
+ 
+
+ 
+
+Nexus IQ server doesn't scan at OS level
+
+ 
+
+IQ server helps you CODIFY your Risk Appetite
+
+ 
+
+Cloudbees Jenkins Advisor (TODO)
+
+ 
+
+ 
+
+CloudBees DevOptics
+
+ 
+______________
+
+
+http://www.telerik.com/fiddler
+
+jmxterm 
+
+html ssh terminal
+
+ 
+Arquillan
+http://arquillian.org/
+https://github.com/arquillian/arquillian-core
+
+____________
+
+
+http://www.adam-bien.com/roller/abien/entry/10_useful_java_ee_tools
+
+https://developers.redhat.com/resources/?referrer=jbd#!
+ 
+https://developers.redhat.com/quickstarts/eap/kitchensink-ear/
+
+_______
+OpenShift
+
+https://aws.amazon.com/about-aws/whats-new/2017/09/red-hat-openshift-container-platform-on-the-aws-cloud-quick-start-reference-deployment/
+
+quotas:
+https://docs.openshift.com/container-platform/latest/admin_guide/managing_projects.html
+https://github.com/openshift/origin/blob/master/examples/project-quota/README.md
+https://docs.openshift.com/container-platform/latest/admin_guide/quota.html
+
+ 
+https://docs.openshift.org/latest/getting_started/administrators.html
+sudo docker run -d --name "origin" --privileged --pid=host --net=host -v /:/rootfs:ro -v /var/run:/var/run:rw -v /sys:/sys -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
+        -v /var/lib/docker:/var/lib/docker:rw -v /var/lib/origin/openshift.local.volumes:/var/lib/origin/openshift.local.volumes:rslave openshift/origin start
+		
+
+		
+OpenShift if here to come in the near future, for this I would like to talk you guys into OpenShift on a weekly basis, this is my schedule I had in mind.
+
+ 
+
+1.     Essentials
+
+Ø  View words on Docker essentials
+
+Ø  Objectives from POC earlier this year
+
+Ø  Kubernetes and Openshift architecture
+
+Ø  OCP objects and compute environment
+
+Ø  Quick OCP walkthrough UI and CLI
+
+2.     Component management
+
+Ø  S2I Source to Images – designing builder images https://blog.openshift.com/create-s2i-builder-image/
+
+Ø  Intro and designing custom OCP templates - https://blog.openshift.com/part-2-creating-a-template-a-technical-walkthrough/
+
+3.     More to come…
+
+ 
+https://stefanopicozzi.blog/2016/12/18/getting-started-with-oc-cluster-updown/
+
+https://www.redhat.com/en/about/press-releases/red-hat-unveils-end-end-cloud-native-development-environment-red-hat-openshiftio
+
+https://linoxide.com/linux-how-to/setup-openshift-origin-centos-7/
+ 
+
+https://www.youtube.com/watch?v=XNdi4AC_EPQ
+
+https://github.com/openshift/source-to-image
+
+ 
+
+https://github.com/coreos/etcd/blob/master/Documentation/learning/why.md
+
+https://hub.docker.com/r/openshift/origin-base/
+
+
+
+
+https://blog.openshift.com/create-s2i-builder-image/
+
+ 
+
+https://blog.openshift.com/part-2-creating-a-template-a-technical-walkthrough/
+
+ 
+
+ _____________
+
+fabric8
+
+https://fabric8.io/guide/overview.html
+
+
+
+
+____________
+
+heapster
+
+https://hub.docker.com/r/kubernetes/heapster/
+
+___________
+
+
+JENKINS
+
+https://www.infoq.com/articles/orch-pipelines-jenkins
+
+
+Spring boot
+https://javabrains.io/courses/spring_bootquickstart/
+
+
+Proxy
+https://github.com/adamfisk/LittleProxy
+
+
+https://github.com/wildfly-swarm/wildfly-swarm-examples/tree/master/camel
+
+
+mvn archetype:generate -DarchetypeArtifactId=jboss-javaee7-webapp-archetype -DarchetypeGroupId=org.jboss.archetype.eap -DarchetypeVersion=7.0.0
+
+This is the solution I would like to propose replace the temporary downstream REST authentication on TAN and the things we will discuss this afternoon.
+http://developers.redhat.com/blog/2016/10/04/how-red-hat-re-designed-its-single-sign-on-sso-architecture-and-why/
+About OpenID Connect
+https://keycloak.gitbooks.io/securing-client-applications-guide/content/v/2.4/topics/overview/supported-protocols.html
+and
+http://openid.net/connect/
+About support platforms
+https://keycloak.gitbooks.io/securing-client-applications-guide/content/v/2.4/topics/overview/supported-platforms.html
+
+ 
+https://stackoverflow.com/questions/7693669/how-to-post-a-json-object-to-a-jax-rs-service
+
+http://docs.jboss.org/cdi/learn/userguide/CDI-user-guide.html
+
+ 
+ 
+https://docs.jboss.org/hibernate/entitymanager/3.5/reference/en/html/querycriteria.html
+https://www.tutorialspoint.com/jsf/jsf_managed_beans.htm
+https://en.wikipedia.org/wiki/JavaServer_Faces
+https://docs.jboss.org/weld/reference/2.1.0.Final/en-US/html/intro.html
+https://docs.oracle.com/javaee/6/tutorial/doc/gjaam.html#gjacb
+https://www.youtube.com/watch?v=iHFz5XVT-H8
+https://www.youtube.com/results?sp=EgQYAigBUBQ%253D&search_query=doku+arch%C3%A4ologie
+https://www.opensubtitles.org/de/ssearch/sublanguageid-ger/idmovie-2006
+
+
+eclipse python development and remote debugging
+https://docs.python.org/3.6/tutorial/index.html
+
+
+http://www.adam-bien.com/roller/abien/entry/java_ee_7_java_8
+
+_____________
+
+
+https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html
+
+admrun@srp06012lx ~]$ /u01/app/java/JB1/bin/jstat -gc 12381
+S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT  
+5632.0 5120.0 3103.6  0.0   688128.0 554093.9 1398272.0   269194.1  123212.0 108373.1 17484.0 13478.2   5546   53.567   4      0.744   54.310
+
+[admrun@srp06012lx ~]$ /u01/app/java/JB1/bin/jcmd 12381 VM.native_memory
+12381:
+Native memory tracking is not enabled
+_____________
+
+
+

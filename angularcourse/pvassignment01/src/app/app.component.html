@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+    <input type="text" class="form-control" [(ngModel)]="username">
+    <p>{{ username }}</p>
+    <button class="btn btn-primary"  [disabled]="username === ''" (click)="onCreateServer()">Reset user</button>
+    </div>
+  </div>
+</div>

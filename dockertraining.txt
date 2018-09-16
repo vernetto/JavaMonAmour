@@ -1,0 +1,223 @@
+http://training.play-with-docker.com/helloworld/
+
+docker info
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl status docker
+
+
+docker pull centos
+#here nothing happens
+docker run centos
+docker container ls
+docker run -i -t centos
+yum install man
+yum install ansible
+exit
+docker commit 4f0b435cdbd7 centosansible
+
+
+docker run 
+docker images
+docker ps -a
+docker login vernetto
+
+docker run -d --name redis redis:3.2.0
+
+// build from a Dockerfile
+docker build -t dockerapp:v0.2  
+
+docker stop <container_name>
+
+// None network container
+docker run -d --net none busybox sleep 1000
+
+docker network ls
+
+
+·         Get yourself a VM and install Docker, https://www.docker.com/community-edition
+
+·         Go through this tutorial, which lets you build a wildfly and jdk image with an example war file. This will give you a bit of an impression how we will build images from JCT in the future http://rmpestano.github.io/blog/posts/a-simple-javaee-docker-example.html
+
+ 
+
+Try the following minimal instruction set on this image https://hub.docker.com/r/jboss/wildfly/
+
+ 
+
+·         docker pull jboss/wildfly (this will pull the image from docker hub onto your local registry)
+
+·         docker run –ti –user root jboss/wildfly /bin/bash ( go through the image file structure once you are in the container with bash)
+
+·         docker run –name test -p 8080:8080 -p 9990:9990 -d jboss/wildfly /opt/jboss/wildfly/bin/standalone.sh  -bmanagement 0.0.0.0  (this will run jboss in the background with name test)
+
+·         docker ps –a (check your running image)
+
+·         docker exec –ti test (debug into the running wildfly container and go around and then simply exit that debug session with “exit”)
+
+·         docker cp /somedirectory/somefile rob:/opt/jboss (experience how you can copy files in and out of your container)
+
+·         docker commit –m “my first commit” test mynewimage/latest (commit your changes to your new image)
+
+·         docker history mynewimage/latest (verify the commit history on your image)
+
+·         docker inspect test (see what inspect shows you through JSON)
+
+·         docker stop (this will stop and hibernate the container process)
+
+·         docker start (start it up again)
+
+·         docker logs –f test  (check the running log file on the container)
+
+·         docker stop (stop the container again)$
+
+·         docker rm (remove the container permently)
+
+ 
+ 
+docker build -t friendlyname .  # Create image using this directory's Dockerfile
+docker run -p 4000:80 friendlyname  # Run "friendlyname" mapping port 4000 to 80
+docker run -d -p 4000:80 friendlyname         # Same thing, but in detached mode
+docker container ls                                # List all running containers
+docker container ls -a             # List all containers, even those not running
+docker container stop <hash>           # Gracefully stop the specified container
+docker container kill <hash>         # Force shutdown of the specified container
+docker container rm <hash>        # Remove specified container from this machine
+docker container rm $(docker container ls -a -q)         # Remove all containers
+docker image ls -a                             # List all images on this machine
+docker image rm <image id>            # Remove specified image from this machine
+docker image rm $(docker image ls -a -q)   # Remove all images from this machine
+docker login             # Log in this CLI session using your Docker credentials
+docker tag <image> username/repository:tag  # Tag <image> for upload to registry
+docker push username/repository:tag            # Upload tagged image to registry
+docker run username/repository:tag                   # Run image from a registry
+
+
+
+________________
+
+Turnbull Docker in action
+http://www.javamonamour.org/2017/09/books-docker-in-action.html
+
+sudo docker run -i -t ubuntu /bin/bash
+hostname
+cat /etc/hosts
+docker stop bob_the_container
+
+docker run --name bob_the_container -i -t ubuntu /bin/bash
+
+docker stop bob_the_container
+ps -ef | grep docker | wc -l
+docker start bob_the_container
+ps -ef | grep docker | wc -l
+
+docker attach bob_the_container
+docker attach --sig-proxy=false bob_the_container
+
+docker run --name daemon_dave -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
+docker exec -ti daemon_dave /bin/bash
+cat /etc/hosts
+172.17.0.2	b027eaed9f5f
+
+
+docker logs -ft daemon_dave
+
+docker top daemon_dave
+docker kill daemon_dave
+
+docker rm daemon_dave
+docker ps -q -a
+
+bootfs, rootfs, 
+
+copy on write
+
+
+docker search puppet
+
+sudo docker run -i -t ubuntu /bin/bash
+apt-get -yqq update
+apt-get -y install apache2
+exit
+docker commit 3aa9a58e0eb7 vernetto/apache2
+docker history vernetto/apache2
+
+
+Dockerfile
+
+# Version: 0.0.1
+FROM ubuntu:14.04
+MAINTAINER James Turnbull "james@example.com"
+RUN apt-get update
+RUN apt-get install -y nginx
+RUN echo 'Hi, I am in your container' \
+>/usr/share/nginx/html/index.html
+EXPOSE 80
+
+
+docker build --no-cache -t="vernetto/static_web" .
+
+"Docker requires command(s) to keep running in the foreground. Otherwise, it thinks that application is stopped and it shutdown the container."
+
+docker run -d -p 80 --name static_web vernetto/static_web nginx -g "daemon off;"
+
+#get info on ports
+docker ps -l
+#to know to which specific port you are mapping the 80
+docker port <cid> 80
+
+docker run -d -p 8080:80 --name static_web vernetto/static_web nginx -g "daemon off;"
+
+
+simple vaffanculo example
+
+FROM alpine:latest
+CMD echo "ciao sono vaffanculo"
+
+docker build -t="vaffanculo" .
+docker run vaffanculo
+docker run vaffanculo echo "stronzo"
+
+sudo docker push static_web
+
+sudo docker run -d -p 5000:5000 registry
+
+docker images vernetto/static_web
+docker tag a5605d3531c0 localhost:5000/vernetto/static_web
+docker push localhost:5000/vernetto/static_web
+
+
+https://www.dockerbook.com/
+https://github.com/turnbullpress/dockerbook-code
+
+
+redis:
+docker run --name some-redis -d redis
+
+ip a show docker0
+ip a | grep veth | wc -l
+
+
+
+/usr/lib/systemd/system/docker.service
+
+curl -s "http://docker.example.com:2375/images/json" | python -mjson.tool
+curl -s "http://docker.example.com:2375/containers/json?all=1" | python -mjson.tool
+
+_______________
+
+
+# Stop all containers
+docker stop $(docker ps -a -q)
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+
+#remove unused images
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+#remove stopped containers
+docker rm $(docker ps -qa --no-trunc --filter "status=exited")
+
+docker inspect --format='{{ .State.Running }}' daemon_dave
+

@@ -1,0 +1,137 @@
+git version
+git config --global user.name "vernetto"
+git config --global user.email "vernettop@gmail.com"
+git clone https://github.com/vernetto/pvtests
+git status
+git add start.txt // https://git-scm.com/docs/git-add
+git add -A // stages non-git changes
+git reset HEAD start.txt // to unstage
+git checkout -- start.txt // discard local changes
+git commit -m "adding"
+git push origin master
+alias npp='notepad++.exe -multiInst -nosession' // to be put in .bash_profile
+cat ~/.gitconfig
+git config --global core.editor "notepad++.exe -multiInst -nosession"
+git config --global --list
+git config --global --edit // gives location of global file
+git config --global -e
+git ls-files
+
+
+git config --global alias.add-com-push '!git add . && git commit -a -m "commit" && git push'
+
+git log --abbrev-commit
+git log --oneline --graph --decorate
+git log --since="3 days ago"
+
+
+git config --global merge.tool p4merge
+git config --global mergetool.p4merge.path "C:/Program Files/Perforce/p4merge.exe"
+git config --global diff.tool p4merge
+git config --global difftool.p4merge.path "C:/Program Files/Perforce/p4merge.exe"
+git config --global difftool.prompt false
+git config --global mergetool.prompt false
+
+
+
+git diff HEAD HEAD^  // compares with previous commit
+git diff master origin/master // compares local and remote
+
+git reset --hard origin master // rollback changes
+git reset --hard savepoint  // rollback changes
+git diff --stage
+git diff HEAD
+
+
+git commit --amend  // add last changes to previous commit, to avoid creation of an extra commit
+
+git gc // runs garbage collection
+
+
+
+======
+set GIT_CURL_VERBOSE=1  // enable debug info
+
+==================
+
+PVGITTUTORIAL
+
+Open Firefox
+create an account pvmarmotta as pvernetto@gmail.com PW Marmotta01
+
+Open chrome 
+create an account pvdugongo as vernettop@gmail.com PW Dugongo01
+
+
+Read the https://guides.github.com/activities/hello-world/
+
+
+Try first creating a new repo "pvmarm_01" from web ui
+Then delete it
+
+
+in Intellij, create simple java project, share it to github (create auth token)
+
+IJ:  right-click on project, open on github
+
+if you get a message 
+
+07:42	Can't finish GitHub sharing process
+			Successfully created project 'marm01' on GitHub, but initial push failed:
+			unable to access 'https://github.com/pvmarmotta/marm01.git/': The requested URL returned error: 403
+
+then
+			
+explore .git folder, config file:
+[remote "origin"]
+	url = https://github.com/pvmarmotta/marm01.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+
+and change url to https://pvmarmotta@github.com/pvmarmotta/marm01.git
+	
+IJ: right-click  on project- git- commit directory
+IJ: you can have the same with VCS/Git (ALT-S/G) 
+IJ: see in bottom-right: icon says "git: master"
+
+IJ: File/Settings/ search for git
+	
+
+Another way: in IJ, File/New/Project from Version Control/Github, URL = https://github.com/pvmarmotta/marm01.git
+
+VCS / Git / Remotes 
+	
+
+
+…or create a new repository on the command line
+
+echo "# fusaro" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/publicpierre/fusaro.git
+git push -u origin master
+…or push an existing repository from the command line
+
+git remote add origin https://github.com/vernetto/springdemo.git
+git push -u origin master
+
+
+git push --set-upstream origin master  // to set the remote URL
+git push https://username:password@myrepository.biz/file.git --all // to specify username and pw
+git remote -v // verify remote url
+
+__
+
+QUESTIONS
+
+cherry pick: (rare) 
+detached head
+force push
+fast forward: the local master doesn't have any commits that the remote branch you were merging didn't have (rare)
+
+git tag -a v006 -m "working"
+git push --tags
+git push --follow-tags
+git tag --delete tagname // delete local tag
+git push --delete origin v003 // delete remote tag 
+
