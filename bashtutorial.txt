@@ -1,4 +1,9 @@
-https://ryanstutorials.net/bash-scripting-tutorial/
+References:
+
+https://ryanstutorials.net/bash-scripting-tutorial/  this tutorial
+
+http://tldp.org/LDP/abs/html/string-manipulation.html  string manipulation in bash
+
 
 
 #shebang 
