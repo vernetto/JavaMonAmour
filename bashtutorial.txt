@@ -1,0 +1,84 @@
+https://ryanstutorials.net/bash-scripting-tutorial/
+
+
+#shebang 
+#!/bin/bash
+
+#built-in variables
+$0 - The name of the Bash script.
+$1 - $9 - The first 9 arguments to the Bash script. (As mentioned above.)
+$# - How many arguments were passed to the Bash script.
+$@ - All the arguments supplied to the Bash script.
+$? - The exit status of the most recently run process.
+$$ - The process ID of the current script.
+$USER - The username of the user running the script.
+$HOSTNAME - The hostname of the machine the script is running on.
+$SECONDS - The number of seconds since the script was started.
+$RANDOM - Returns a different random number each time is it referred to.
+$LINENO - Returns the current line number in the Bash script.
+
+
+#display current environment variables
+env 
+
+#execute a command and assign output to a variable
+myvar=$( ls /etc | wc -l )
+
+export myvar
+
+
+inside "" (double quotes) the variable substitution takes place, inside '' (single quotes) no.
+
+#read from stdin
+read var1
+read -p "your name" name
+read -ps "silent password" pw
+
+
+
+
+STDIN - /proc/<processID>/fd/0  or /proc/self/fd/0
+STDOUT - /proc/<processID>/fd/1 or /proc/self/fd/1
+STDERR - /proc/<processID>/fd/2 or /proc/self/fd/2
+
+#reading from stdin
+cat /dev/stdin 
+
+#arithmetics
+let a=5+4
+expr 5+4
+a=$(( 5+4 ))
+#print length of a variable
+myvariable="hello"
+echo ${#myvariable}
+
+
+#if statement
+if [ $1 -gt 100 ]
+then
+	echo Hey that\'s a large number.
+	pwd
+fi
+
+this help about expressions can be displayed with "man test":
+
+! EXPRESSION 	The EXPRESSION is false.
+-n STRING 	The length of STRING is greater than zero.
+-z STRING 	The lengh of STRING is zero (ie it is empty).
+STRING1 = STRING2 	STRING1 is equal to STRING2
+STRING1 != STRING2 	STRING1 is not equal to STRING2
+INTEGER1 -eq INTEGER2 	INTEGER1 is numerically equal to INTEGER2
+INTEGER1 -gt INTEGER2 	INTEGER1 is numerically greater than INTEGER2
+INTEGER1 -lt INTEGER2 	INTEGER1 is numerically less than INTEGER2
+-d FILE 	FILE exists and is a directory.
+-e FILE 	FILE exists.
+-r FILE 	FILE exists and the read permission is granted.
+-s FILE 	FILE exists and it's size is greater than zero (ie. it is not empty).
+-w FILE 	FILE exists and the write permission is granted.
+-x FILE 	FILE exists and the execute permission is granted.
+
+test 001 = 1
+echo $? (result is 0)
+test 001 -eq 1
+echo $? (result is 1)
+

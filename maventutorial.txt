@@ -1,0 +1,199 @@
+References
+
+https://www.mkyong.com/maven/how-to-create-a-java-project-with-maven/
+
+
+1) run mvn package alone
+
+2) create pom.xml
+
+"the simplest pom"
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+		 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.pierre.maventests</groupId>
+    <artifactId>firsttest</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>	
+</project>
+
+
+
+
+3) create from archetype 
+
+mvn archetype:generate -DgroupId=org.pierre.maventests -DartifactId=firsttest -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+or simply 
+mvn archetype:generate 
+
+cd firsttest
+
+
+superpom is in D:\apps\apache-maven-3.6.0\lib in maven-model-builder-3.6.0.jar 
+D:\apps\apache-maven-3.6.0\lib\maven-model-builder-3.6.0.jar\org\apache\maven\model\ pom-4.0.0.xml
+
+
+mvn help:effective-pom
+ 
+<major version>.<minor version>.<incremental version>-<qualifier>
+
+ 
+
+   <build>
+	<finalName>${project.groupId}-FANCULO-${project.artifactId}</finalName>
+
+	
+mvn validate
+
+
+____________
+	
+  <plugins>
+  <plugin>
+<artifactId>maven-compiler-plugin</artifactId>
+<configuration>
+<source>1.8</source>
+<target>1.8</target>
+</configuration>
+</plugin>
+  </plugins>
+
+  </build>
+
+mvn compiler:compile  
+mvn compile
+
+____________
+
+mvn deploy
+  
+   Deployment failed: repository element was not specified in the POM inside distributionManagement element or in -DaltDeploymentRepository=id::layout::url parameter
+   
+<distributionManagement>
+       <repository>
+         <id>internal.repo</id>
+         <name>Internal repo</name>
+         <url>file:///d:/temp</url>
+       </repository>
+   </distributionManagement>
+
+
+   
+mvn help:active-profiles
+
+mvn help:describe -Dcmd=compiler:compile
+
+mvn -help
+
+mvn help:describe -Dplugin=help
+  
+
+________________
+
+mvn site 
+requires:
+
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-site-plugin</artifactId>
+  <version>3.7.1</version>
+</plugin>
+
+
+____________
+
+lifecycles phases mappings are in D:\apps\apache-maven-3.6.0\lib\maven-core-3.6.0.jar\META-INF\plexus\  components.xml
+
+http://maven.apache.org/ref/3.6.0/maven-core/lifecycles.html
+
+
+
+___________
+
+
+
+<plugin>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>exec-maven-plugin</artifactId>
+	<version>1.5.0</version>
+	<configuration>
+		<mainClass>org.baeldung.java.App</mainClass>
+	</configuration>
+</plugin>
+
+mvn exec:java		
+
+______________
+
+https://www.baeldung.com/maven
+
+mvn archetype:generate -DgroupId=org.baeldung -DartifactId=parent-project
+<packaging>pom</packaging>
+
+cd parent-project
+mvn archetype:generate -DgroupId=org.baeldung  -DartifactId=core
+mvn archetype:generate -DgroupId=org.baeldung  -DartifactId=service
+mvn archetype:generate -DgroupId=org.baeldung  -DartifactId=webapp
+mvn archetype:generate -DgroupId=org.baeldung  -DartifactId=webapp -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-webapp 
+
+
+https://www.baeldung.com/maven-dependency-latest-version
+
+mvn versions:display-dependency-updates
+mvn versions:use-latest-versions
+mvn versions:use-latest-releases
+
+
+https://www.baeldung.com/maven-goals-phases
+cd parent-project
+mvn help:describe -Dcmd=compile
+cd core
+mvn help:describe -Dcmd=compile
+(the result shows more "defined" phases)
+
+
+_____________
+
+
+mvn archetype:generate -B -DarchetypeArtifactId=maven-archetype-archetype -DgroupId=org.pierre -DartifactId=mavenarchetype -Dpackage=jar
+
+mvn site:site
+mvn site:run and then http://localhost:8080
+
+
+
+mvn deploy
+
+   
+<distributionManagement>
+       <repository>
+         <id>internal.repo</id>
+         <name>Internal repo</name>
+         <url>file:///d:/temp</url>
+       </repository>
+</distributionManagement>
+
+_______
+
+maven wrapper
+
+mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
+
+
+_________________
+
+
+git clone https://github.com/eugenp/tutorials.git
+cd tutorials
+
+
+_________
+
