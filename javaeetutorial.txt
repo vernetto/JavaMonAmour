@@ -1,0 +1,165 @@
+https://javaee.github.io/javaee-spec/javadocs/
+
+
+javax.ejb.EJB
+
+
+
+javax.ejb.MessageDriven
+@MessageDriven(mappedName = "jms/JavaEE8BookQueue")
+
+
+implements javax.jms.MessageListener
+
+
+
+javax.ejb.TransactionAttribute
+javax.ejb.TransactionAttributeType
+
+
+___________
+
+
+javax.annotation.Resource
+
+@Resource
+private UserTransaction userTransaction;
+
+__________
+
+
+javax.ejb.TransactionManagement
+@TransactionManagement(value = TransactionManagementType.BEAN)
+
+
+________________
+
+@PreDestroy
+@PostConstruct
+
+________________
+
+
+@Resource
+TimerService timerService;
+
+javax.ejb.Schedule
+
+__________
+
+
+@RolesAllowed({ "appuser", "appadmin" })
+
+_________
+
+
+@javax.inject.Named
+@javax.enterprise.context.RequestScoped
+
+
+@Named(value="customerBean")
+
+@javax.inject.Inject
+
+@javax.inject.Qualifier
+
+
+
+_________
+
+
+@RequestScoped
+@javax.enterprise.context.ConversationScoped
+@SessionScoped
+@ApplicationScoped
+@Dependent
+
+javax.enterprise.context.Conversation
+
+
+
+________
+
+CDI Events
+
+https://dzone.com/articles/an-overview-of-cdi-events
+javax.enterprise.event.Event
+@javax.annotation.Priority
+@javax.enterprise.event.Observes
+
+
+___________
+
+
+javax.json.Json
+
+javax.json.stream.JsonGenerator
+
+https://javaee.github.io/javaee-spec/javadocs/javax/json/JsonPatch.html
+
+
+
+
+https://github.com/FasterXML/jackson
+https://github.com/google/gson
+JSON-B
+
+
+@javax.ws.rs.POST
+@javax.ws.rs.Consumes
+@javax.ws.rs.Path
+
+javax.ws.rs.core.Response
+
+@Path("/customercontroller")
+
+
+
+__________
+
+@javax.annotation.Resource
+javax.jms.ConnectionFactory
+
+@javax.annotation.Resource
+javax.jms.Queue
+
+
+
+
+@javax.ws.rs.Produces
+@javax.ws.rs.Consumes
+
+
+javax.ws.rs.client.ClientBuilder
+javax.ws.rs.client.Entity
+
+javax.ws.rs.PathParam
+
+
+__________________
+
+
+Utilities
+
+org.apache.commons.lang3.builder.ReflectionToStringBuilder
+public String toString() {   return ReflectionToStringBuilder.reflectionToString(this);    }
+	
+
+
+
+
+<dependencies>
+	<dependency>
+		<groupId>javax</groupId>
+		<artifactId>javaee-web-api</artifactId>
+		<version>8.0</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+		<version>3.6</version>
+	</dependency>
+</dependencies>
+
+	
