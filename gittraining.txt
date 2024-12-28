@@ -1,6 +1,17 @@
-git version
+global config is in C:\Users\Pierre-Luigi\.gitconfig
+
+git --version
+#configure user globally
 git config --global user.name "vernetto"
-git config --global user.email "vernettop@gmail.com"
+git config --global user.email "publicpierre@gmail.com"
+#configure user locally per repository
+git config user.name "pvdugongo"
+git config user.email "vernettop@gmail.com"
+
+#check repository settings
+cat .git/config
+
+
 git clone https://github.com/vernetto/pvtests
 git status
 git add start.txt // https://git-scm.com/docs/git-add
@@ -134,4 +145,6 @@ git push --tags
 git push --follow-tags
 git tag --delete tagname // delete local tag
 git push --delete origin v003 // delete remote tag 
+
+
 
