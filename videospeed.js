@@ -10,15 +10,46 @@
   container.style.top = '10px';
   container.style.right = '10px';
   container.style.zIndex = '10000';
-  container.style.background = 'rgba(0,0,0,0.7)';
+  container.style.background = 'rgba(0,0,0,0.8)';
   container.style.color = 'white';
   container.style.padding = '10px';
   container.style.borderRadius = '8px';
   container.style.display = 'flex';
-  container.style.alignItems = 'center';
-  container.style.gap = '10px';
+  container.style.flexDirection = 'column';
+  container.style.fontFamily = 'Arial';
+  container.style.userSelect = 'none';
+  container.style.cursor = 'move';
 
-  // Create down button
+  // Create title bar with close button
+  const titleBar = document.createElement('div');
+  titleBar.style.display = 'flex';
+  titleBar.style.justifyContent = 'space-between';
+  titleBar.style.alignItems = 'center';
+  titleBar.style.marginBottom = '8px';
+
+  const title = document.createElement('span');
+  title.textContent = 'Speed Control';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '×';
+  closeBtn.style.marginLeft = '10px';
+  closeBtn.style.background = 'transparent';
+  closeBtn.style.color = 'white';
+  closeBtn.style.border = 'none';
+  closeBtn.style.fontSize = '16px';
+  closeBtn.style.cursor = 'pointer';
+  closeBtn.onclick = () => container.remove();
+
+  titleBar.appendChild(title);
+  titleBar.appendChild(closeBtn);
+  container.appendChild(titleBar);
+
+  // Create controls row
+  const controls = document.createElement('div');
+  controls.style.display = 'flex';
+  controls.style.alignItems = 'center';
+  controls.style.gap = '10px';
+
   const down = document.createElement('button');
   down.textContent = '−';
   down.onclick = () => {
@@ -26,7 +57,6 @@
     updateSpeed();
   };
 
-  // Create up button
   const up = document.createElement('button');
   up.textContent = '+';
   up.onclick = () => {
@@ -34,7 +64,6 @@
     updateSpeed();
   };
 
-  // Create input field
   const input = document.createElement('input');
   input.type = 'number';
   input.min = '0.1';
@@ -50,21 +79,18 @@
     }
   };
 
-  // Create display span
   const speedDisplay = document.createElement('span');
   speedDisplay.textContent = speed.toFixed(1) + 'x';
+
+  controls.appendChild(down);
+  controls.appendChild(input);
+  controls.appendChild(up);
+  controls.appendChild(speedDisplay);
+  container.appendChild(controls);
+
+  document.body.appendChild(container);
 
   function updateSpeed() {
     video.playbackRate = speed;
     input.value = speed.toFixed(1);
-    speedDisplay.textContent = speed.toFixed(1) + 'x';
-  }
-
-  container.appendChild(down);
-  container.appendChild(input);
-  container.appendChild(up);
-  container.appendChild(speedDisplay);
-  document.body.appendChild(container);
-
-  updateSpeed();
-})();
+    speedDisplay.textContent = speed.toFixed
