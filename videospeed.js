@@ -45,4 +45,4 @@
   container.appendChild(titleBar);
 
   // Controls row
-  const controls = document.createElement('div
+  const controls = document.createElement
