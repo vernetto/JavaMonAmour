@@ -45,4 +45,79 @@
   container.appendChild(titleBar);
 
   // Controls row
-  const controls = document.createElement
+  const controls = document.createElement('div');
+  controls.style.display = 'flex';
+  controls.style.alignItems = 'center';
+  controls.style.gap = '10px';
+
+  const down = document.createElement('button');
+  down.textContent = '−';
+  down.onclick = () => {
+    speed = Math.max(0.1, speed - 0.1);
+    updateSpeed();
+  };
+
+  const up = document.createElement('button');
+  up.textContent = '+';
+  up.onclick = () => {
+    speed = Math.min(16, speed + 0.1);
+    updateSpeed();
+  };
+
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.min = '0.1';
+  input.max = '16.0';
+  input.step = '0.1';
+  input.value = speed.toFixed(1);
+  input.style.width = '60px';
+  input.onchange = () => {
+    const val = parseFloat(input.value);
+    if (!isNaN(val) && val >= 0.1 && val <= 16.0) {
+      speed = val;
+      updateSpeed();
+    }
+  };
+
+  const speedDisplay = document.createElement('span');
+  speedDisplay.textContent = speed.toFixed(1) + 'x';
+
+  controls.appendChild(down);
+  controls.appendChild(input);
+  controls.appendChild(up);
+  controls.appendChild(speedDisplay);
+  container.appendChild(controls);
+  document.body.appendChild(container);
+
+  function updateSpeed() {
+    video.playbackRate = speed;
+    input.value = speed.toFixed(1);
+    speedDisplay.textContent = speed.toFixed(1) + 'x';
+  }
+
+  updateSpeed();
+
+  // Make draggable
+  let isDragging = false;
+  let offsetX = 0, offsetY = 0;
+
+  titleBar.addEventListener('mousedown', function (e) {
+    isDragging = true;
+    offsetX = e.clientX - container.offsetLeft;
+    offsetY = e.clientY - container.offsetTop;
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (isDragging) {
+      container.style.left = e.clientX - offsetX + 'px';
+      container.style.top = e.clientY - offsetY + 'px';
+      container.style.right = 'auto'; // stop sticking to right
+    }
+  });
+
+  document.addEventListener('mouseup', function () {
+    isDragging = false;
+    document.body.style.userSelect = '';
+  });
+})();
