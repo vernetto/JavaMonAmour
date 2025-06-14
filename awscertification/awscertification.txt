@@ -1,0 +1,53 @@
+#API Gateway
+
+#Kinesis: real time data streaming
+
+#Kinesis Data Analytics : 
+
+
+#Fargate launch type : 
+
+
+#API Gateway REST API endpoint 
+
+
+#AWS Lambda
+
+
+#AWS Step Function
+
+
+#EKS
+
+
+#EKS Anywhere 
+
+
+#Lightsail
+
+#EventBridge 
+
+#SQS : Simple Queue Service
+
+#EC2 Spot Instances
+
+#EC2 On-Demand Instances
+
+#EC2 Reserved Instances 
+
+#EFS: Elastic File System (regional)
+
+#S3: global
+
+#RDS: 
+
+
+#Inter-region VPC peering connection
+
+#CloudFront : distribute content with low latency and high data transfer speeds
+
+
+#Application Load Balancer
+
+
+
