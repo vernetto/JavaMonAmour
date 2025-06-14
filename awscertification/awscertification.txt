@@ -1,6 +1,6 @@
 #API Gateway
 
-#Kinesis: real time data streaming
+#Kinesis: real time data streaming, high-throughput, ordered, real-time data ingestion
 
 #Kinesis Data Analytics : 
 
@@ -12,6 +12,7 @@
 
 
 #AWS Lambda
+Scales automatically and reduces management overhead
 
 
 #AWS Step Function
@@ -29,6 +30,10 @@
 
 #SQS : Simple Queue Service
 
+#EC2
+Elastic Compute Cloud
+operational burden
+
 #EC2 Spot Instances
 
 #EC2 On-Demand Instances
@@ -37,7 +42,12 @@
 
 #EFS: Elastic File System (regional)
 
-#S3: global
+#S3: 
+Simple Storage Service
+global
+
+#S3 bucket
+
 
 #RDS: 
 
@@ -50,4 +60,76 @@
 #Application Load Balancer
 
 
+#FSx for Lustre 
+high-performance file system optimized for fast processing of large datasets (ML, HPC, video)
+
+#EMR
+
+
+#Glue
+serverless ETL service 
+
+
+#KMS
+Key Management System
+
+#SSE-C
+Server Side Encryption with customer-provided keys
+
+#SSE-S3
+Server Side Encryption with S3 managed keys
+
+
+#SSE-KMS
+Server Side Encryption with Key Management System
+
+
+#DynamoDB
+Fully managed, highly available, and scales well with low latency
+
+#DAX (DynamoDB Accelerator)
+in-memory caching to DynamoDB
+
+#CloudTrail
+
+
+#Web Application Firewall AWS WAF
+geo-match conditions
+
+
+#Redis
+
+#ElastiCache for Redis
+
+
+#RDS for Aurora
+
+
+#Neptune 
+graph database
+
+
+#FSx for Windows File Server
+supports DFS namespaces and replication
+native Windows file system compatibility
+fully managed and integrates with Active Director
+
+#ALB Application Load Balancer
+load balancing HTTP and HTTPS traffic 
+supports content-based routing
+High availability
+
+
+
+#Elastic IP
+
+
+#Public IP
+
+
+#Private IP 
+
+
+#Network Load Balancer
+optimized for TCP/UDP traffic and high performance
 
