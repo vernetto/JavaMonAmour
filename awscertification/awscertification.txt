@@ -1,12 +1,29 @@
 #API Gateway
+- creates RESTful APIs that enable stateless client-server communication
+- creates WebSocket APIs which enables stateful, full-duplex communication between client and server
 
 #Kinesis: real time data streaming, high-throughput, ordered, real-time data ingestion
 
+#Kinesis Data Firehose
+- load streaming data into data stores and analytics tools. It can capture, transform, and load streaming data into Amazon S3, Amazon Redshift, Amazon OpenSearch Service, and Splunk 
+
+
 #Kinesis Data Analytics : 
+- a fully managed service that allows you to process and transform streaming data using SQL, with minimal infrastructure overhead
+- can output directly to Amazon S3
 
 
-#Fargate launch type : 
+#ECS
+Elastic Container Service
 
+#ECS with EC2 launch type
+- you manage EC2 instances yourself 
+- charged based on EC2 instances and EBS volumes used
+
+#ECS with Fargate launch type
+- you do not manage servers
+- charged based on vCPU and memory resources 
+- more granular and flexible in pricing, especially for sporadic or event-driven workloads.
 
 #API Gateway REST API endpoint 
 
@@ -22,13 +39,15 @@ Scales automatically and reduces management overhead
 
 
 #EKS Anywhere 
-
+use managed K8s while keeping workloads local
 
 #Lightsail
 
 #EventBridge 
 
 #SQS : Simple Queue Service
+FIFO
+Batch
 
 #EC2
 Elastic Compute Cloud
@@ -41,21 +60,57 @@ operational burden
 #EC2 Reserved Instances 
 
 #EFS: Elastic File System (regional)
+low-latency, shared file access
+
+#Instance Store-based Amazon EC2 instance
+includes local, physically attached disk storage (called instance store volumes) on the host machine. (ephemeral storage). very fast I/O.
+
+#EFS resource policies
+allow Cross-account access
 
 #S3: 
 Simple Storage Service
-global
+global, object storage
 
 #S3 bucket
+
+#S3 One Zone-Infrequent Access (S3 One Zone-IA)
+
+#S3 Glacier Deep Archive
+- the lowest-cost storage option in AWS, designed for long-term archival of infrequently accessed data
+
+#S3TA (S3 Transfer Acceleration)
+- Uses Amazon CloudFront edge locations to speed up uploads from remote locations
+
+#S3 Event Notifications
 
 
 #RDS: 
 
 
+
+#RDS Multi-AZ 
+- synchronous replication  between primary and standby instance, and spans at least two Availability Zones (AZs) within a single region
+- Used for durability and availability
+ 
+#RDS Read Replicas
+- used to scale read traffic
+- based on asynchronous replication from source DB and can be within an Availability Zone (AZ), Cross-AZ, or Cross-Region 
+
+#RDS Custom for Oracle
+- ability to customize both the Oracle database and the underlying OS
+
+
+
+#Shared VPC
+
+#Peered VPC
+
+
 #Inter-region VPC peering connection
 
 #CloudFront : distribute content with low latency and high data transfer speeds
-
+Caches static content at edge locations
 
 #Application Load Balancer
 
@@ -68,6 +123,15 @@ high-performance file system optimized for fast processing of large datasets (ML
 
 #Glue
 serverless ETL service 
+
+#Glue DataBrew
+- visually build workflows
+
+
+#AppFlow
+
+
+#Athena
 
 
 #KMS
@@ -105,6 +169,22 @@ geo-match conditions
 #RDS for Aurora
 
 
+#Aurora Replica
+Adds read scalability to handle increased read requests during spikes
+Highly available and replica lag is minimal.
+
+#Babelfish for Aurora PostgreSQL
+allows Aurora PostgreSQL to understand T-SQL, Microsoft SQL Server's native query language
+
+
+#AWS Schema Conversion Tool (AWS SCT)
+converts the schema from SQL Server to PostgreSQL
+standard AWS solution for heterogeneous database migrations
+
+ 
+
+
+
 #Neptune 
 graph database
 
@@ -132,4 +212,64 @@ High availability
 
 #Network Load Balancer
 optimized for TCP/UDP traffic and high performance
+
+#PrivateLink
+allows secure, private access to services without traversing the public internet
+
+
+#Auto Scaling group
+step scaling policy
+target tracking policy
+simple scaling policy
+
+#Outposts
+run AWS services physically on-premises
+
+#Snowball
+
+#Snowball edge
+
+#Direct connect connection
+- dedicated and low-latency unencrypted connection with high throughput
+
+
+#IAM role
+allows Cross-account access
+
+#IAM policies
+- Permissions boundaries: restrict a user/role
+
+#GuardDuty
+- threat detection: Unusual API calls , port scanning, Suspicious DNS requests, S3 data events
+- VPC Flow Logs, Domain Name System (DNS) logs, AWS CloudTrail events
+
+#Inspector
+security assessments, checks vulnerabilities
+
+
+#FSx File Gateway
+
+
+#Comprehend
+
+
+#Lookout for Vision
+
+
+#Redshift
+- data warehouse used for complex queries and analytics
+
+#OpenSearch
+- Search and analytics engine
+
+
+#Storage Gateway File Gateway
+
+#Global Accelerator
+- both TCP and UDP traffic
+- Fast regional failover
+
+#Route 53
+
+
 
