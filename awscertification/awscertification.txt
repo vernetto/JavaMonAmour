@@ -1,3 +1,17 @@
+#LABS TO DO
+
+Launch an EC2 instance behind an ALB in a private subnet with a NAT gateway
+
+Build an S3 static website with CloudFront and Route 53
+
+Use CloudFormation or CDK to deploy an entire environment
+
+Set up VPC peering and test traffic
+
+Create an IAM role and assume it via CLI
+
+===========
+
 #ARN Amazon Resource Name
 A globally unique identifier for AWS resources
 
@@ -95,6 +109,10 @@ operational burden
 - run on hardware dedicated to a single AWS account
 - may share HW with other instances in same account
 
+#EC2 Hibernate
+- RAM is preserved, boot much faster, RAM is written to a file in the root EBS volume, which must be encrypted
+
+
 #Security Groups
 - act as EC2 firewall
 - can be attached to multiple instances
@@ -121,9 +139,11 @@ operational burden
 #EFS: Elastic File System (regional)
 - low-latency, shared file access
 - support persistent, shared storage for stateful applications
+- compatible onli with Linux AMI (now Windows)
+- encryption with KMS
 
 #Instance Store-based Amazon EC2 instance
-includes local, physically attached disk storage (called instance store volumes) on the host machine. (ephemeral storage). very fast I/O.
+includes local, physically attached disk storage (called instance store volumes) on the host machine. ephemeral storage: they lose storage if stopped. very fast I/O.
 
 #EFS resource policies
 allow Cross-account access
@@ -185,8 +205,6 @@ global, object storage
 
 #CloudFront : distribute content with low latency and high data transfer speeds
 Caches static content at edge locations
-
-#Application Load Balancer
 
 
 #FSx for Lustre 
@@ -267,10 +285,6 @@ allows Aurora PostgreSQL to understand T-SQL, Microsoft SQL Server's native quer
 converts the schema from SQL Server to PostgreSQL
 standard AWS solution for heterogeneous database migrations
 
- 
-
-
-
 #Neptune 
 graph database
 
@@ -281,11 +295,20 @@ graph database
 - native Windows file system compatibility
 - fully managed and integrates with Active Director
 
-#ALB Application Load Balancer
-load balancing HTTP and HTTPS traffic 
-supports content-based routing
-High availability
+#ELB Elastic Load Balancer 
+- managed LB, integrates well with AWS offerings
+- provides DNS name, but static IP only for NLB (not for ALB)
+- uses health checks to verify EC2 instances (/health)
+- EC2 can be setup to accept traffic only from SG of ELB
+- sticky session cookie AWSALB or AWSELB
 
+#ALB Application Load Balancer
+- load balancing HTTP and HTTPS and WebSocket traffic (not TCP) 
+- supports content-based routing
+- ALBs can route traffic to different Target Groups based on URL Path, Hostname, HTTP Headers, and Query Strings.
+- High availability
+- performs connection termination, application sees the ALB IP address
+- Target Groups for an Application Load Balancer can include EC2 instances, Private IP Addresses, and Lambda Functions, but not other load balancers
 
 
 #Elastic IP
@@ -298,16 +321,30 @@ High availability
 
 
 #Network Load Balancer
-optimized for TCP/UDP traffic and high performance
+- optimized for TCP/UDP traffic and high performance
+- has 1 static IP per AZ
+
+#Gateway Load Balancer
+- manages a fleet of 3rd party virtual appliances
+- for security, intrusion detection
+- GENEVE protocol port 6081
+
 
 #PrivateLink
 allows secure, private access to services without traversing the public internet
 
 
-#Auto Scaling group
-step scaling policy
-target tracking policy
-simple scaling policy
+#Auto Scaling group ASG
+- manage a fleet of EC2 instances
+- has a launch template associated (AMI, instance type, key pair, security groups, etc.)
+- has scaling policy:
+step scaling policy: Scale in steps based on alarm thresholds
+target tracking policy: Maintain a specific metric value (e.g., CPU at 50%)
+simple scaling policy: Add/remove fixed number of instances when an alarm triggers
+scheduled scaling: Scale based on a schedule (e.g., weekdays at 9am)
+predictive scaling: based on forecast
+- Minimum/Maximum/Desired Capacity
+
 
 #Outposts
 run AWS services physically on-premises
@@ -462,7 +499,7 @@ Dedicated Instances are Amazon EC2 instances that run in a virtual private cloud
 
 
 #CZLB cross-zone load balancing
-
+- When Cross-Zone Load Balancing is enabled, ELB distributes traffic evenly across all registered EC2 instances in all AZs.
 
 
 #Alias record
@@ -536,15 +573,20 @@ A virtual network interface that you can attach to an EC2 instance in a VPC.
 Used for: Assigning multiple private/public IPs, associating security groups, and network interface failover.
 
 - High Availability: You can detach an ENI from a failed instance and reattach it to a healthy one, preserving network configuration.
+- only within same AZ
 - Multi-NIC EC2 Instances: Use multiple ENIs to place an EC2 instance in multiple subnets (e.g., public and private subnets).
 - Separate Traffic: Isolate traffic (e.g., front-end vs. back-end) across different ENIs for better control or security.
 - Elastic Load Balancing & Failover: For custom failover logic with static IPs and network configurations.
 
+#EBS volume
+network drive, can be detached and attached to another instance, locked to same AZ unless you take a snapshot
+- by default the root volume is deleted when EC2 instance terminates, but not other attached EBS volumes
+
 #EBS volume types
-##io1 (IOPS SSD)
+##io1 io2 Block Express (IOPS SSD)
 -  up to 64,000 IOPS, for I/O intensive and high-performance workloads
 
-##gp2 General Purpose SSD
+##gp2 gp3 General Purpose SSD
 - Maxes out at 16,000 IOPS
 
 ##st1 Throughput Optimized HDD
@@ -552,6 +594,18 @@ Used for: Assigning multiple private/public IPs, associating security groups, an
 
 ##sc1 Cold HDD
 - Cheapest, but very low performance 
+
+| Feature              | Amazon EBS                        | Amazon EFS                              |
+|----------------------|-----------------------------------|-----------------------------------------|
+| Storage type         | Block storage                     | Network (file) storage (NFS)            |
+| Access               | Single EC2 (mostly)               | Multiple EC2s across AZs                |
+| File system          | User-managed                      | AWS-managed                             |
+| Availability         | Single AZ                         | Multi-AZ (unless using One Zone)        |
+| Shared access        | Not by default                    | Yes                                     |
+| Performance tuning   | Manual (choose volume type)       | Automatic scaling                       |
+| Best for             | Databases, boot volumes           | Shared data, CMS, web apps              |
+
+
 
 
 #AWS Managed IPSec VPN Connection
@@ -582,6 +636,8 @@ while keeping their internal private IPs hidden.
 When you enable PITR, DynamoDB backs up your table data automatically with per-second granularity so that you can restore to any given second in the preceding 35 days
 
 
+#AMI Amazon Machine Image
+- customization of an EC2 instance
 
 
 
