@@ -19,8 +19,16 @@ A globally unique identifier for AWS resources
 #API Gateway
 - creates RESTful APIs that enable stateless client-server communication
 - creates WebSocket APIs which enables stateful, full-duplex communication between client and server
+- supports versioning and environments, throttling, API keys
+- can expose: Lambda function, HTTP endpoint (webapp, ALB), AWS service
 
-#Kinesis: real time data streaming, high-throughput, ordered, real-time data ingestion
+The endpoints can be:
+- Edge-Optimized (for global clients)
+- Regional
+- Private (via ENI)
+
+#Kinesis: real time data streaming, scalable, high-throughput, ordered, real-time data ingestion.
+Captures clickstreams, database event streams, financial transactions, social media feeds, IT logs...
 
 #Kinesis Data Firehose
 - load streaming data into data stores and analytics tools. It can capture, transform, and load streaming data into Amazon S3, Amazon Redshift, Amazon OpenSearch Service, and Splunk 
@@ -29,6 +37,10 @@ A globally unique identifier for AWS resources
 #Kinesis Data Analytics : 
 - a fully managed service that allows you to process and transform streaming data using SQL, with minimal infrastructure overhead
 - can output directly to Amazon S3
+
+
+#EC2
+Amazon Elastic Compute Cloud: core AWS service that provides virtual servers (instances) in the clou
 
 
 #ECS
@@ -51,19 +63,29 @@ Elastic Container Service
 - fully managed serverless compute service that natively supports Python runtimes. It is ideal for event-driven and API-based microservices. Lambda automatically scales based on request volume, requires no server provisioning or patching, and integrates easily with API Gateway for RESTful access
 
 #AWS Step Function
-
+serverless visual workflow to orchestrate Lambda functions
+sequence, parallel, conditions, timeouts, error handling
 
 #EKS
 
 
-#EKS Anywhere 
+#EKS Anywhere
 use managed K8s while keeping workloads local
 
 #Lightsail
 
-#EventBridge
+#EventBridge (aka CloudWatch events)
 - serverless event bus service provided by AWS
+- schedule cron jobs
+- events can be: EC2 instance start, CodeBuild failed, S3 upload object, Trusted Advisor, CloudTrail api call
 
+each event can trigger: compute (Lambda, AWS batch, ECS task); integration (SQS, SNS, Kinesis Data Streams); Orchestration (Step functions, CodePipeline, CodeBuild); Maintenance (SSM, EC2 Actions)
+
+EventBridge is the default event bus, but there is also the Partner Event Bus, integrated with partners like Zendesk or Datadog.
+
+There is also Custom Event Bus
+
+You can archive and replay events. 
 
 #SQS : Simple Queue Service
 FIFO
@@ -170,9 +192,11 @@ global, object storage
 
 #S3 Event Notifications
 
+#S3 File Gateway
+a virtual or hardware appliance that you deploy on-premises (or in EC2), which exposes a file share using standard file protocols: NFS or SMB
 
 #RDS: 
-
+RDS supports MySQL, PostgreSQL, MariaDB, Oracle, MS SQL Server, and Amazon Aurora.
 
 
 #RDS Multi-AZ 
@@ -186,6 +210,9 @@ global, object storage
 #RDS Custom for Oracle
 - ability to customize both the Oracle database and the underlying OS
 
+#RDS Proxy
+- pools connectons to RDS DB Instance
+- stores credentials in AWS Secrets Manager
 
 #VPC endpoint
 -  a secure way to privately connect your Amazon VPC (Virtual Private Cloud) to supported AWS services (S3, SQS, DynamoDB) —  through the AWS private network, without sending traffic over the public internet.
@@ -205,35 +232,67 @@ global, object storage
 
 #CloudFront : distribute content with low latency and high data transfer speeds
 Caches static content at edge locations
+Certificates must be in us-east-1
+CloudFront distribution = specify origin where content lives (S3, EC2, API Gateyay...), behaviours (rulse) , cache settings, TLS settings, price class, and then caches it in its edge locations
+
+#CloudFront Price Class
+- you can choose to serve your content only from a subset of edge locations that are cheaper — while still maintaining good performance in your target regions
+Price Class 100	Only US, Canada, and Europe (cheapest)
 
 
 #FSx for Lustre 
-high-performance file system optimized for fast processing of large datasets (ML, HPC, video)
+high-performance parallel distributed file system optimized for fast processing of large datasets (ML, HPC, video)
+
 
 #EMR (Elastic MapReduce)
 - a cloud-based big data platform provided by AWS that allows you to process and analyze massive amounts of data using open-source frameworks like:
-Apache Spark, Apache Hadoop, Apache Hive,    Apache HBase, Presto, and more.
+Apache Spark, Apache Hadoop, Apache Hive, Apache HBase, Presto, and more.
 Used for: Big data processing (batch and streaming), Data transformation and ETL, Machine learning and advanced analytics, Log analysis, Clickstream analysis, Data warehouse offloading
+Master node (management), Core Node (long running tasks), Task Node (spot, run tasks). Master and Core nodes are normally reserved instances.
 
 
 #Glue
-serverless ETL service 
+serverless ETL service. used to prepare and transform data for analytics
 
 #Glue DataBrew
 - visually build workflows
+
+#Lake Formation
+discover, cleanse, transform, ingest data into Data Lake, including deduplication. Sources are S3, RDS, relational and NoSQL DBs...
+Data lake = central place to have all your data for analytics purposes
 
 
 #AppFlow
 
 
 #Athena
+serverless query service to analyze data stored in Amazon S3
+SQL language
+supports CSV, JSON, ORC, Avro, Parquet
+used together with Quicksight to create reports/dashboards
+- better use a columnar data for cost saving (Parquet or ORC, use Glue to convert to these formats)
+- better compress data
+- better use partition datasets in S3 to query on virtual columns
+- better use larger files
+ 
+Can run federated queries across data stored in many data sources
+
+#QuickSight
+Serverless BI service to create interactive dashboards. Business analytics. Integrates with many datasources from AWS (RDS, Aurora, Redshift, Athena, S3, OpenSearch, Timestream)
+
+#Apache Flink
+- open-source distributed framework and engine for processing data streams. It’s used to process data in real time (streaming) or in batch mode, and it’s known for its high throughput, low latency, and exactly-once stateful computations.
+- AWS provides a managed service for this
+- integrates with Kinesis, S3, DynamoDB, Redshift, ElasticSearch
 
 
-#KMS
-Key Management System
+#KMS Key Management System
+- a managed service by AWS that lets you easily create, manage, and use cryptographic keys to protect your data
 
-#multi-region keys
-- KMS keys in different AWS regions that can be used interchangeably – as though you had the same key in multiple regions
+KMS Key policies: control access to KMS keys (default or custom)
+
+#KMS multi-region keys MRK
+- KMS keys in different AWS regions that can be used interchangeably – as though you had the same key in multiple regions. You can encrypt in one region and decrypt in another.
 
 
 #SSE-C
@@ -250,22 +309,48 @@ Server Side Encryption with Key Management System
 
 
 #DynamoDB
+NoSQL DB with TX support, massive workloads, distributed DB, 100s TB of storage, consistend performance
 Fully managed, highly available, and scales well with low latency
+- support TTL (e.g. for sessions)
+- backups PITR for last 35 days
+
+- provisioned mode: pay beforehand for provisioned RCU/WCU (read/write capacity unit)
+- on-demand 
 
 #DAX (DynamoDB Accelerator)
-in-memory caching to DynamoDB
+- in-memory caching to DynamoDB
+- stores individual objects cache
+
+#DynamoDB Stream
+When you enable streams on a DynamoDB table, DynamoDB records all changes to the table’s data as a sequence of ordered events
+
+#DynamoDB Global Tables
+DynamoDB Global Tables are multi-region, fully managed, active-active replicas of your DynamoDB table.
+
+
+#DocumentDB
+AWS implementation for MongoDB (NoSQL database)
+
+
 
 #CloudTrail
+- a service from Amazon Web Services that helps you monitor, log, and retain account activity across your AWS infrastructure
+- records all API calls and actions made in your AWS account and delivers them as log files to an S3 bucket (and optionally CloudWatch)
 
+CloudTrail Insights detect unusual activity in your AWS Account
 
 #Web Application Firewall AWS WAF
-geo-match conditions
+- Limit by IP, geo-match conditions
+- HTTP headers, HTTP Body, URI strings, SQL injection and XSS
+- Protects Web App from common web exploits at Layer 7 HTTP 
+- deploy on: ALB, API Gateway, CloudFront, AppSync GraphQL API, Cognito User Pool
+- you setup Web ACL (access control list)
 
 
 #Redis
 
 #ElastiCache for Redis
-
+- Storing Session Data in ElastiCache is a common pattern to ensuring different EC2 instances can retrieve your user's state if needed.
 
 #RDS for Aurora
 
@@ -274,11 +359,23 @@ geo-match conditions
 Adds read scalability to handle increased read requests during spikes
 Highly available and replica lag is minimal.
 
+#Aurora Global Database
+Aurora Global Databases allows you to have an Aurora Replica in another AWS Region, with up to 5 secondary regions.
+
+#IAM Database Authentication
+- not supported by Oracle
+- allows you to use AWS Identity and Access Management (IAM) to authenticate database users, instead of using traditional usernames and passwords.
+- IAM authentication uses temporary credentials and AWS IAM policies to control access.
+
+
+
 #Babelfish for Aurora PostgreSQL
 allows Aurora PostgreSQL to understand T-SQL, Microsoft SQL Server's native query language
 
 #Aurora Serverless v2 for MySQL
 - fully managed service that automatically scales and pauses when not in use
+- adjusts capacity in response to actual usage
+- on-demand, auto-scaling configuration for Amazon Aurora (compatible with MySQL and PostgreSQL) that automatically starts, stops, and scales the database based on your application's needs.
 
 
 #AWS Schema Conversion Tool (AWS SCT)
@@ -286,14 +383,25 @@ converts the schema from SQL Server to PostgreSQL
 standard AWS solution for heterogeneous database migrations
 
 #Neptune 
-graph database
+graph database, across 3 AZ, 15 read replicas
 
 
 #FSx for Windows File Server
 - fully supports the SMB protocol, NTFS, and Windows ACLs.
 - supports DFS namespaces and replication
 - native Windows file system compatibility
+- can be mounted on Linux EC2 instances
 - fully managed and integrates with Active Director
+
+- scratch file system (temporary storage, not replicated, high burst speed)
+- persistent file system (long term storage, replicated in same AZ)
+
+FSx for NetApp ONTAP — for NFS/SMB/iSCSI with NetApp features
+
+FSx for OpenZFS — for ZFS-based workloads
+
+
+
 
 #ELB Elastic Load Balancer 
 - managed LB, integrates well with AWS offerings
@@ -364,13 +472,31 @@ allows Cross-account access
 - Permissions boundaries: restrict a user/role, define the maximum set of permissions a user or role can have
 - user-level access control and can be used for both same-account and cross-account access
 
+#IAM Permission Boundaries
+let you set the maximum permissions that an IAM user or role can ever get, no matter what policies you attach to them later.
+
+
+#IAM Identity Center
+aka AWS Single Sign-On, or SSO
+Centralized user and group management
+Assign fine-grained permissions across AWS accounts and resources
+Users log in once (SSO) and access all assigned resources
+
+#AWS Control Tower
+a service that helps you quickly set up and govern a secure, multi-account AWS environment based on best practices.
+
+Enforces Guardrails o provide governance:
+- preventive guardrail (using SCP)
+- detective guardrail (using AWS config)
+
+
 #GuardDuty
-- threat detection service that continuously monitors for malicious activity and unauthorized behavior
+- AI threat detection service that continuously monitors for malicious activity and unauthorized behavior
 - Unusual API calls , port scanning, Suspicious DNS requests, S3 data events
 - VPC Flow Logs, Domain Name System (DNS) logs, AWS CloudTrail events
 
 #Macie
-- designed to identify and classify sensitive data (like PII) stored in Amazon S3.
+- AI service, designed to identify and classify sensitive data (like PII) stored in Amazon S3.
 
 #Inspector
 security assessments, checks vulnerabilities
@@ -387,9 +513,23 @@ security assessments, checks vulnerabilities
 
 #Redshift
 - data warehouse used for complex queries and analytics
+- based on PostgreSQL, it's OLAP (online analytical processing, for analytics and data warehousing)
+- very performant, scales to PBs of data
+- columnar data, parallel query engine
+It has a leader node and several compute nodes
+Multi-AZ mode. Can take snapshots and restore them to a new cluster. 
+- you can load data with Kinesis Data Firehose, S3 copy command, EC2 instance JDBC driver
+
+Redshift Spectrum is a feature of Amazon Redshift that allows you to query data directly in Amazon S3 without loading it into Redshift tables.
+
+Enhanced VPC Routing in Amazon Redshift forces all COPY and UNLOAD traffic between your Redshift cluster and data repositories (such as S3) to go through your Amazon VPC, enabling you to control and monitor this traffic using VPC features such as security groups, NACLs, and flow logs.
+
 
 #OpenSearch
-- Search and analytics engine
+- Search and analytics engine, successor of ElasticSearch
+- search on any field
+- managed cluster or serverless cluster
+
 
 #AWS Storage Gateway
 - is a hybrid cloud storage service that gives you on-premises access to virtually unlimited cloud storage
@@ -402,7 +542,7 @@ security assessments, checks vulnerabilities
 - Designed for scenarios where the dataset is cloud-backed but low-latency access to recent or frequently used files is required.
 
 #AWS Global Accelerator
-- provides two static IP addresses that act as a fixed entry point to your applications
+- a networking service that improves the availability and performance of your applications by providing static IP addresses that act as entry points to your AWS resources, and routing user traffic through the AWS global network to the closest healthy endpoint.
 - automatically routes users to the optimal AWS Region based on latency, health, and routing policies.
 - both TCP and UDP traffic
 - Fast regional failover
@@ -412,6 +552,24 @@ security assessments, checks vulnerabilities
 - highly available and scalable cloud Domain Name System (DNS) web service
 - automatically answers DNS queries for local VPC domain names for Amazon EC2 instances
 
+-A maps a hostname to IPv4
+-AAAA maps a hostname to IPv6
+-CNAME maps a hostname to another hostname (can't create a CNAME record for the top node of a DNS namespace, or Zone Apex: you can create for www.example.com but not for example.com). It can be app.mydomain.com -> blabla.anything.com.
+-Alias: points a hostname to a AWS resource (app.mydomain.com -> blabla.amazonaws.com); target can be ELB, CloudFront, API Gateway, Elastic Beanstalk, S3 websites, VPC interface Endpoints, Global Accelerator, Route 53 Record
+-ANAME Like CNAME, but works at the root domain 
+-NS Name Server for the Hosted Zone
+
+hosted zone  is a container for DNS records for a specific domain; it's the DNS configuration for a domain, managed in AWS.
+
+#Routing Policies
+- Simple: you have only one resource, you create a single record with one IP address or one alias.
+- Weighted: split traffic across multiple resources based on weights
+- Latency-based: route users to the region that provides lowest latency
+- Failover:  For active-passive setups (primary and backup resources).
+- Geolocation :  route traffic based on the geographic location of the user
+- Geoproximity: Route traffic based on geographic location of users and resources, optionally biased.
+- Multivalue Answer: to return multiple healthy IPs for load balancing at client-side 
+
 #DFS Replication (DFSR)
 
 
@@ -420,13 +578,18 @@ security assessments, checks vulnerabilities
 
 
 #MQ
+- broker for RabbitMQ and ActiveMQ
 - Supports AMQP natively
+- can run in Multi-AZ mode with failover
+- has Queue (SQS) and Topic (SNS) features
 
 
 #AWS Transit Gateway
 - connect many VPCs across accounts in a star network topology
 - Route propagation in AWS Transit Gateway is a feature that automatically updates the route tables of the Transit Gateway based on its attached resources, such as VPCs or VPNs.
 
+#Cognito
+give users an identity to interact with our web or mobile application
 
 #Cognito User Pool-based authentication
 - designed specifically for user authentication
@@ -434,11 +597,12 @@ security assessments, checks vulnerabilities
 - Application Load Balancer (ALB) supports Cognito User Pool-based authentication natively, allowing authentication to be handled at the ALB layer, without modifying the backend application
 
 #Cognito Identity Pools
-- Authorization to access AWS services
+- Authorization to access AWS services, grants temporary AWS credentials
 
 
 #Datasync
 - online data transfer service that simplifies, automates, and accelerates copying large amounts of data between on-premises storage systems and AWS Storage services, as well as between AWS Storage services.
+Useful for: Cloud migration,  Backup & disaster recovery, Daily Syncs, Data processing workflows
 
 #Transit VIF
 A Transit VIF (Transit Virtual Interface) is a special type of virtual interface in AWS Direct Connect that allows your on-premises network to communicate with multiple Amazon VPCs via an AWS Transit Gateway.
@@ -485,7 +649,7 @@ Dedicated Instances are Amazon EC2 instances that run in a virtual private cloud
 - template written in YAML or JSON (IaC)
 
 #CloudFormation StackSets
-- allow you to deploy a single CloudFormation template across multiple AWS accounts and regions in a scalable and consistent wa
+- allow you to deploy a single CloudFormation template across multiple AWS accounts and regions in a scalable and consistent way
 
 
 #NAT Gateway
@@ -545,6 +709,8 @@ Provide visibility across the application stack for auditing and troubleshooting
 #Connection Draining
 - enables the load balancer to complete in-flight requests made to instances that are de-registering or unhealthy
 
+#AWS Shield
+DDoS : Distributed Denial of Service
 
 #AWS Shield Advanced
 - provides advanced, always-on DDoS protection for resources like ALBs, CloudFront, and Route 53
@@ -621,8 +787,7 @@ network drive, can be detached and attached to another instance, locked to same 
 #Internet Gateway (IGW)
 - allows communication between your VPC and the internet
 - horizontally scaled, redundant, and highly available
-- to provide a target in your VPC route tables for internet-routable traffic and to perform network address translation (NAT) for instances that have been assigned public IPv4 addresses,
-while keeping their internal private IPs hidden.
+- to provide a target in your VPC route tables for internet-routable traffic and to perform network address translation (NAT) for instances that have been assigned public IPv4 addresses, while keeping their internal private IPs hidden.
 - needed when your EC2 instances have public or Elastic IPs
 
 
@@ -638,6 +803,139 @@ When you enable PITR, DynamoDB backs up your table data automatically with per-s
 
 #AMI Amazon Machine Image
 - customization of an EC2 instance
+
+
+#Keyspaces
+Opensource NoSQL distributed database
+managed Cassandra-compatible database service
+
+#TimeStream
+serverless time series database
+data storage tiering
+built-in time series analytics functions
+
+
+#Cassandra
+open-source, highly scalable, distributed NoSQL database designed to handle large amounts of data across many servers with no single point of failure
+
+#QLDB 
+(Quantum Ledger Database) is a fully managed ledger database service from AWS.
+Provides an immutable, cryptographically verifiable transaction log (ledger)
+
+#MSK (Managed Streaming for Apache Kafka)
+- fully-managed Apache Kafka service
+- supports existing Kafka APIs
+
+Apache Kafka is an open-source distributed event streaming platform
+
+
+
+#Transcribe
+speech to text (ASR)
+remove PII using Redaction
+
+#Polly
+text to speech
+can customize with Lexicon and SSML
+
+#Translate
+language translation
+
+#Lex
+Lex also powers Alexa, Natural Language Understanding NLU
+Helps build chatbots
+
+#Connect
+receive calls, create contact flows, cloud-based virtual contact center
+
+#Comprehend
+NLP, find insights and relationships in text, extract key phrases, sentiment analysis
+
+#Comprehend medical
+
+
+#Sagemaker
+build ML models
+
+#Kendra
+Document search service powered by ML
+extract answers from documents
+NL search capabilities
+
+#Personalize
+ML-service to build apps with real-time personalized recommendations
+
+#Textract
+extracts text, handwriting, data from scanned documents, forms and tables
+
+#Rekognition
+find objects, people, text in images and videos
+
+
+#CloudWatch
+provides metrics on every service in AWS
+you can create custom metrics
+you can create dashboards
+
+#CloudWatch Metrics Streams
+stream metrics to a destination :
+- Kinesis Data Firehose
+- Datadog, Dynatrace, New Relic, Splunk...
+
+#CloudWatch logs 
+service that helps you collect, monitor, store, and analyze log files from your AWS resources, applications, and services in (almost) real time
+
+You need an agent on your EC2 machine or on-premises server. Cloudwatch Unified Agent can send also system-level metrics.
+
+#CloudWatch logs Insights
+- query engine for analyzing logs stored in CloudWatch Logs
+
+#CloudWatch Contributor Insights
+helps you analyze log data and identify top contributors to operational issues, anomalies, or trends in your AWS environment.
+
+#CloudWatch alarms
+trigger notification for any metric
+
+Composite alarms are AND/OR of single metrics
+
+
+#Config Rules
+customizable, automated checks that continuously evaluate the configuration of your AWS resources to see if they comply with your desired security, compliance, or operational best practices.
+Example: “S3 buckets must not be publicly accessible.”
+
+You can setup remediation rules.
+
+
+#Organizations
+centrally manage multiple AWS accounts
+main account is the management account
+other accounts are the member accounts
+
+#SSM parameter store
+Secure storage for configuration and secrets
+optional encryption with KMS
+version tracking
+security, with IAM
+
+"aws ssm get-parameters bla mumble --with-decryption"
+
+
+#ACM AWS Certificate Manager
+Manages TLS certificates
+
+#Secrets Manager
+- a managed service from Amazon Web Services that helps you securely store, manage, and retrieve secrets
+- it can automatically change (rotate) the secret on a schedule
+- Parameter Store is more general-purpose and has a free tier, but lacks advanced secret rotation features.
+
+
+
+#Firewall Manager
+service to centrally configure and manage firewall rules (Security Groups, WAF rules, AWS Shield Advanced protections)
+
+
+#Bastion Host
+EC2 instance in a public subnet, acts as a secure entry point to a private instance inside a VPC
 
 
 
